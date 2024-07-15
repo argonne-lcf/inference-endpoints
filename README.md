@@ -3,7 +3,7 @@ This repository provides examples of using the OpenAI API-based `ALCF Inference 
 
 Currently, our endpoints are running on two clusters, with more to come:
 
-* Sophia  - https://data-portal-dev.cels.anl.gov/resource_server/sophia
+* Sophia  - https://data-portal-dev.cels.anl.gov/resource_server/sophia <span style="color: red;">**Note:** The Sophia endpoint is currently unavailable as we are awaiting the service account.</span>
 * Polaris - https://data-portal-dev.cels.anl.gov/resource_server/polaris
 
 ## Supported Frameworks
