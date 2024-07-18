@@ -101,7 +101,7 @@ done
 #!/bin/bash
 
 # Define the access token
-access_token="your_access_token_here"
+access_token=$(cat access_token.txt)
 
 # Define the base URL
 base_url="https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/completions"
