@@ -51,7 +51,7 @@ First, run [generate_auth_token.py](./generate_auth_token.py) to get the access 
 
 ```bash
 python3 generate_auth_token.py
-access_token = "generated_code"
+access_token=$(cat access_token.txt)
 curl -X GET "https://data-portal-dev.cels.anl.gov/resource_server/list-endpoints" \
      -H "Authorization: Bearer ${access_token}"
 ```
@@ -64,13 +64,13 @@ curl -X GET "https://data-portal-dev.cels.anl.gov/resource_server/list-endpoints
 #!/bin/bash
 
 # Define the access token
-access_token="your_access_token_here"
+access_token=$(cat access_token.txt)
 
 # Define the base URL
 base_url="https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/chat/completions"
 
 # Define the model and parameters
-model="mistral-7B-instruct-v03"
+model="mistralai/Mistral-7B-Instruct-v0.3"
 temperature=0.2
 max_tokens=150
 
@@ -107,7 +107,7 @@ access_token="your_access_token_here"
 base_url="https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/completions"
 
 # Define the model and parameters
-model="meta-llama-3-8b-instruct"
+model="meta-llama/Meta-Llama-3-8B-Instruct"
 temperature=0.2
 max_tokens=150
 
@@ -120,6 +120,7 @@ prompts=(
 
 # Loop through the prompts and send a POST request for each
 for prompt in "${prompts[@]}"; do
+  echo "'"$prompt"'"
   curl -X POST "$base_url" \
        -H "Authorization: Bearer ${access_token}" \
        -H "Content-Type: application/json" \

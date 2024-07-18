@@ -1,6 +1,5 @@
 import globus_sdk
-import requests
-import json
+import os
 
 # Globus ID and Scope
 # ===================
@@ -34,3 +33,7 @@ auth_code = input("Enter the code you just received: ")
 token_response = auth_client.oauth2_exchange_code_for_tokens(auth_code)
 access_token = token_response.by_resource_server[gateway_client_id]["access_token"]
 print(f"Access token: {access_token}")
+
+# Store the access token in a file
+with open("access_token.txt", "w") as f:
+    f.write(access_token)
