@@ -47,7 +47,7 @@ You can use curl or Python to interact with the Inference API.
 
 ### Using Curl
 
-First, run [generate_auth_token.py](./generate_auth_token.py) to get the access token. Set the `{access_token}`. For example, to check all available endpoints, run:
+First, run [generate_auth_token.py](./generate_auth_token.py) to obtain the access token. This script creates the [access_token.txt](./access_token.txt) file. For example, to check all available endpoints, run:
 
 ```bash
 python3 generate_auth_token.py
@@ -55,6 +55,8 @@ access_token=$(cat access_token.txt)
 curl -X GET "https://data-portal-dev.cels.anl.gov/resource_server/list-endpoints" \
      -H "Authorization: Bearer ${access_token}"
 ```
+
+**Note:** Once an `access_token` is created it will be active for 24 hours.
 
 #### Batch of Inputs
 
@@ -141,6 +143,5 @@ Refer to [remote_inference_gateway.ipynb](./remote_inference_gateway.ipynb) for 
 
 ## Limitations
 
-* The endpoints on Polaris are set up to run on the debug queue. The first request will take time to acquire the node. Once the node is acquired, you can make requests sequentially for up to an hour.
-* The latency for the requests may be slightly higher than making requests directly to the service. We are working on improving this.
+* The endpoints on Sophia are set up to run on the `single-node` queue. The first request will take 5-10 minutes to launch a job that will run for 12 hours.
 * For a new model to be served, contact us to create an endpoint.

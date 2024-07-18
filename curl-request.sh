@@ -1,5 +1,4 @@
 #!/bin/bash
-# If access token in file read else paste here
 access_token=$(cat access_token.txt)
 curl -X POST "https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/chat/completions" \
      -H "Authorization: Bearer ${access_token}" \
