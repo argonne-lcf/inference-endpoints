@@ -6,7 +6,8 @@ Currently, our endpoints are running on two clusters, with more to come:
 * Sophia  - https://data-portal-dev.cels.anl.gov/resource_server/sophia
 * Polaris - https://data-portal-dev.cels.anl.gov/resource_server/polaris
 
-**Note:** You need to be on Argonne's network to access these endpoints. You can run this from systems within the Argonne networks, or you will need a VPN, Dash, ssh tunnels if working remotely.
+**Note:** Endpoints are restricted by Globus groups and policy. Contact [Benoit Cote](bcote@anl.gov) or [Aditya Tanikanti](atanikanti@anl.gov) with your Globus ID to be added to the Globus group.
+You need to be on Argonne's network to access these endpoints. You can run this from systems within the Argonne networks, or you will need a VPN, Dash, ssh tunnels if working remotely.
 
 - [Supported Frameworks](#supported-frameworks)
 - [API Endpoints](#api-endpoints)
@@ -38,8 +39,6 @@ The OpenAI API chat completions and completions are available, with `batch` proc
 
 ## Prerequisites
 
-* Endpoints are restricted by Globus groups and policy. Contact [Benoit Cote](bcote@anl.gov) or [Aditya Tanikanti](atanikanti@anl.gov) with your Globus ID to be added to the Globus group.
-
 * A Python environment with `globus_sdk` installed:
 ```bash
 conda create -n globus_env python==3.10.12 --y
@@ -48,6 +47,7 @@ pip install globus_sdk
 ```
 
 * Access to Argonne's network. Use VPN or Dash if working remotely.
+* Endpoints are restricted by Globus groups and policy. Contact [Benoit Cote](bcote@anl.gov) or [Aditya Tanikanti](atanikanti@anl.gov) with your Globus ID to be added to the Globus group.
 
 ## Usage
 
