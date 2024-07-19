@@ -35,6 +35,7 @@ The OpenAI API chat completions and completions are available, with `batch` proc
 * meta-llama-3-8b-instruct
 * meta-llama-3-70b-instruct
 
+**Note:** These models run in 12-hour batches, after which the node is released for other tasks. If no model is currently active and a query is made, a new 12-hour session will start. The first query after the node's release will have a delay of about 10 minutes to load the models. Soon, we will add a persistent reservation for longer runtimes.
 **Note:** For additional endpoints, add the HF-compatible model to the path `/eagle/argonne_tpc/model_weights/` and contact us at [atanikanti@anl.gov] or raise an issue in this repository and we will add it promptly.
 
 ## Prerequisites
@@ -45,9 +46,14 @@ conda create -n globus_env python==3.10.12 --y
 conda activate globus_env
 pip install globus_sdk
 ```
-
-* Access to Argonne's network. Use VPN or Dash if working remotely.
-* Endpoints are restricted by Globus groups and policy. Contact [Benoit Cote](bcote@anl.gov) or [Aditya Tanikanti](atanikanti@anl.gov) with your Globus ID to be added to the Globus group.
+* Access to Argonne's network. Use VPN, Dash or ssh tunnel from the ALCF computes if working remotely.
+* Endpoints are restricted by Globus groups and policy. Contact [Benoit Cote](bcote@anl.gov) or [Aditya Tanikanti](atanikanti@anl.gov) with your Globus email/ID to be added to the Globus group.
+* Create an access token. This script creates the [access_token.txt](./access_token.txt) file.
+```bash
+python3 generate_auth_token.py
+access_token=$(cat access_token.txt)
+```
+**Note:** Once an `access_token` is created it will be active for 24 hours.
 
 ## Usage
 
@@ -55,7 +61,7 @@ You can use curl or Python to interact with the Inference API.
 
 ### Using Curl
 
-First, run [generate_auth_token.py](./generate_auth_token.py) to obtain the access token. This script creates the [access_token.txt](./access_token.txt) file. For example, to check all available endpoints, run:
+After running [generate_auth_token.py](./generate_auth_token.py), to check all available endpoints
 
 ```bash
 python3 generate_auth_token.py
@@ -63,8 +69,6 @@ access_token=$(cat access_token.txt)
 curl -X GET "https://data-portal-dev.cels.anl.gov/resource_server/list-endpoints" \
      -H "Authorization: Bearer ${access_token}"
 ```
-
-**Note:** Once an `access_token` is created it will be active for 24 hours.
 
 #### Batch of Inputs
 
@@ -147,9 +151,221 @@ For more examples see [curl-requests.sh](./curl-request.sh)
 
 ### Using Python
 
-Refer to [remote_inference_gateway.ipynb](./remote_inference_gateway.ipynb) for detailed examples and steps to access our endpoints using Python.
+First, ensure you have generated the authentication token by running [generate_auth_token.py](./generate_auth_token.py). 
 
-## Limitations
+#### Batch of Inputs
 
-* The endpoints on Sophia are set up to run on the `single-node` queue. The first request will take 5-10 minutes to launch a job that will run for 12 hours.
-* For a new model to be served, contact us to create an endpoint.
+##### chat/completions endpoint:
+
+```python
+import requests
+import json
+
+# Define the access token
+with open('access_token.txt', 'r') as file:
+    access_token = file.read().strip()
+
+# Define the base URL
+base_url = "https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/chat/completions"
+
+# Define the model and parameters
+model = "mistralai/Mistral-7B-Instruct-v0.3"
+temperature = 0.2
+max_tokens = 150
+
+# Define an array of messages
+messages = [
+    "List all proteins that interact with RAD51",
+    "What are the symptoms of diabetes?",
+    "How does photosynthesis work?"
+]
+
+# Function to send POST requests
+def send_request(message):
+    headers = {
+        'Authorization': f'Bearer {access_token}',
+        'Content-Type': 'application/json'
+    }
+    data = {
+        "model": model,
+        "temperature": temperature,
+        "max_tokens": max_tokens,
+        "messages": [{"role": "user", "content": message}]
+    }
+    response = requests.post(base_url, headers=headers, data=json.dumps(data))
+    return response.json()
+
+# Loop through the messages and send a POST request for each
+for message in messages:
+    response = send_request(message)
+    print(response)
+
+```
+
+##### completions endpoint:
+
+```python
+import requests
+import json
+
+# Define the access token
+with open('access_token.txt', 'r') as file:
+    access_token = file.read().strip()
+
+# Define the base URL
+base_url = "https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/completions"
+
+# Define the model and parameters
+model = "meta-llama/Meta-Llama-3-8B-Instruct"
+temperature = 0.2
+max_tokens = 150
+
+# Define an array of prompts
+prompts = [
+    "List all proteins that interact with RAD51",
+    "What are the symptoms of diabetes?",
+    "How does photosynthesis work?"
+]
+
+# Function to send POST requests
+def send_request(prompt):
+    headers = {
+        'Authorization': f'Bearer {access_token}',
+        'Content-Type': 'application/json'
+    }
+    data = {
+        "model": model,
+        "temperature": temperature,
+        "max_tokens": max_tokens,
+        "prompt": prompt
+    }
+    response = requests.post(base_url, headers=headers, data=json.dumps(data))
+    return response.json()
+
+# Loop through the prompts and send a POST request for each
+for prompt in prompts:
+    response = send_request(prompt)
+    print(response)
+```
+
+To run these Python scripts, save each script to a file (e.g., `chat_completions.py` and `completions.py`), then execute them using Python:
+
+```bash
+python3 chat_completions.py
+python3 completions.py
+```
+
+### Using OpenAI Package
+
+First, ensure you have generated the authentication token by running [generate_auth_token.py](./generate_auth_token.py). 
+
+Install the OpenAI package if you haven't already:
+
+```bash
+pip install openai
+```
+
+#### Batch of Inputs
+
+##### chat/completions endpoint:
+
+```python
+import openai
+import os
+
+# Define the access token
+with open('access_token.txt', 'r') as file:
+    access_token = file.read().strip()
+
+# Define the base URL
+base_url = "https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/chat/completions"
+
+# Define the model and parameters
+model = "mistralai/Mistral-7B-Instruct-v0.3"
+temperature = 0.2
+max_tokens = 150
+
+# Define an array of messages
+messages = [
+    "List all proteins that interact with RAD51",
+    "What are the symptoms of diabetes?",
+    "How does photosynthesis work?"
+]
+
+# Set the API key for OpenAI
+client = OpenAI(
+    api_key=access_token,
+    base_url=base_url,
+)
+
+# Function to send POST requests
+def send_request(message):
+    response = client.chat.completions.create(
+        model=model,
+        messages=[{"role": "user", "content": message}],
+        temperature=temperature,
+        max_tokens=max_tokens
+    )
+    return response
+
+# Loop through the messages and send a POST request for each
+for message in messages:
+    response = send_request(message)
+    print(response)
+```
+
+##### completions endpoint:
+
+```python
+import openai
+import os
+
+# Define the access token
+with open('access_token.txt', 'r') as file:
+    access_token = file.read().strip()
+
+# Define the base URL
+base_url = "https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/completions"
+
+# Define the model and parameters
+model = "meta-llama/Meta-Llama-3-8B-Instruct"
+temperature = 0.2
+max_tokens = 150
+
+# Define an array of prompts
+prompts = [
+    "List all proteins that interact with RAD51",
+    "What are the symptoms of diabetes?",
+    "How does photosynthesis work?"
+]
+
+# Set the API key for OpenAI
+client = OpenAI(
+    api_key=access_token,
+    base_url=base_url,
+)
+
+# Function to send POST requests
+def send_request(prompt):
+    response = client.completions.create(
+        model=model,
+        prompt=prompt,
+        temperature=temperature,
+        max_tokens=max_tokens
+    )
+    return response
+
+# Loop through the prompts and send a POST request for each
+for prompt in prompts:
+    response = send_request(prompt)
+    print(response)
+```
+
+To run these Python scripts, save each script to a file (e.g., `chat_completions_openai.py` and `completions_openai.py`), then execute them using Python:
+
+```bash
+python3 chat_completions_openai.py
+python3 completions_openai.py
+```
+
+Refer to [remote_inference_gateway.ipynb](./remote_inference_gateway.ipynb) for more detailed examples.
