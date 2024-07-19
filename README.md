@@ -48,9 +48,9 @@ The OpenAI API chat completions and completions are available, with `batch` proc
 **Note:** To add new models/endpoints, please add the HF-compatible model to the path `/eagle/argonne_tpc/model_weights/` and contact us at [atanikanti@anl.gov] or raise an issue in this repository or via slack, and we will add it promptly.
 
 ## Inference Execution
-These models run as part of a 12-hour job on **Sophia**, after which the node is released for other tasks. The endpoints are acquired and activated when the first query is performed by any group member, and subsequent queries by group members will re-use the running job/endpoint.
+The models are currently run as part of a 12-hour job on **Sophia**. The endpoints are dynamically acquired and activated when the first query is performed by any group member, and subsequent queries by group members will re-use the running job/endpoint.
 
-The persistence capability is available. However, we are internally collecting various usage metrics and will add a persistent endpoint service shortly. 
+The persistence capability for the inference service is available. However, we are internally collecting various usage metrics and will add a persistent endpoint service shortly. 
 
 On Polaris, the models are currently run as part of a debug job with a 1-hour duration.
 
