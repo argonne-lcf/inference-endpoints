@@ -7,7 +7,7 @@ Currently, our endpoints are running on two clusters, with more to come:
 * Polaris - https://data-portal-dev.cels.anl.gov/resource_server/polaris
 
 **Note:** Endpoints are restricted by Globus groups and policy. Contact [Benoit Cote](bcote@anl.gov) or [Aditya Tanikanti](atanikanti@anl.gov) with your Globus ID to be added to the Globus group.
-You need to be on Argonne's network to access these endpoints. You can run this from systems within the Argonne networks, or you will need a VPN, Dash, ssh tunnels if working remotely.
+You need to be on Argonne's network to access these endpoints. You can run from systems within the Argonne networks, or you will need a VPN, Dash, ssh tunnels if working remotely.
 
 - [Supported Frameworks](#supported-frameworks)
 - [API Endpoints](#api-endpoints)
