@@ -20,6 +20,7 @@ You need to be on Argonne's network to access these endpoints. You can run this 
 - [Usage](#usage)
   * [Using Curl](#using-curl)
   * [Using Python](#using-python)
+  * [Using OpenAI Package](#using-openai-package)
 
 ## Supported Frameworks
 
@@ -82,9 +83,8 @@ curl -X GET "https://data-portal-dev.cels.anl.gov/resource_server/list-endpoints
      -H "Authorization: Bearer ${access_token}"
 ```
 
-#### Batch of Inputs
 
-##### chat/completions endpoint:
+#### chat/completions endpoint:
 
 ```bash
 #!/bin/bash
@@ -121,7 +121,7 @@ for message in "${messages[@]}"; do
 done
 ```
 
-##### completions endpoint:
+#### completions endpoint:
 
 ```bash
 #!/bin/bash
@@ -165,9 +165,7 @@ For more examples see [curl-requests.sh](./curl-request.sh)
 
 First, ensure you have generated the authentication token by running [generate_auth_token.py](./generate_auth_token.py). 
 
-#### Batch of Inputs
-
-##### chat/completions endpoint:
+#### chat/completions endpoint:
 
 ```python
 import requests
@@ -214,7 +212,7 @@ for message in messages:
 
 ```
 
-##### completions endpoint:
+#### completions endpoint:
 
 ```python
 import requests
@@ -277,9 +275,8 @@ Install the OpenAI package if you haven't already:
 pip install openai
 ```
 
-#### Batch of Inputs
 
-##### chat/completions endpoint:
+#### chat/completions endpoint:
 
 ```python
 import openai
@@ -326,7 +323,7 @@ for message in messages:
     print(response)
 ```
 
-##### completions endpoint:
+#### completions endpoint:
 
 ```python
 import openai
