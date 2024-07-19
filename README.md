@@ -1,5 +1,5 @@
 # ALCF Inference Endpoints
-This repository provides examples of using the OpenAI API-based `ALCF Inference Endpoints` for running Large Language Models (LLMs) inference.
+This repository provides examples of using the OpenAI API-based `ALCF Inference Endpoints` for running Large Language Models (LLMs) inference built using [Globus Compute](https://www.globus.org/compute).
 
 Currently, our endpoints are running on two clusters, with more to come:
 
@@ -13,6 +13,7 @@ You need to be on Argonne's network to access these endpoints. You can run this 
 - [API Endpoints](#api-endpoints)
 - [Available Models](#available-models)
 - [Accessing Endpoints](#accessing-alcf-inference-endpoints)
+- [Inference Execution](#inference-execution)
 - [Prerequisites](#prerequisites)
   * [Python SDK](#python-sdk)
   * [Access Tokens](#access-tokens)
