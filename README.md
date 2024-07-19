@@ -70,7 +70,7 @@ pip install globus_sdk
 python3 generate_auth_token.py
 access_token=$(cat access_token.txt)
 ```
-**Note:** Once an `access_token` is created it will be active for 24 hours.
+**Note:** Once an `access_token` is created, it will be active for 24 hours.
 
 ### Access Restrictions
 * Access to the endpoinsts is restricted to systems on the Argonne's network. Use VPN, Dash or ssh tunnel from the ALCF computes if working remotely.
