@@ -25,7 +25,7 @@ You need to be on Argonne's network to access these endpoints. You can run this 
 ## Supported Frameworks
 
 * vLLM - https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm
-* llama.cpp - https://data-portal-dev.cels.anl.gov/resource_server/sophia/llama-cpp
+* llama.cpp (under testing)- https://data-portal-dev.cels.anl.gov/resource_server/sophia/llama-cpp
 
 ## API Endpoints
 
@@ -44,8 +44,14 @@ The OpenAI API chat completions and completions are available, with `batch` proc
 * meta-llama-3-8b-instruct
 * meta-llama-3-70b-instruct
 
-**Note:** These models run in 12-hour batches, after which the node is released for other tasks. If no model is currently active and a query is made, a new 12-hour session will start. The first query after the node's release will have a delay of about 10 minutes to load the models. Soon, we will add a persistent reservation for longer runtimes.
-**Note:** For additional endpoints, add the HF-compatible model to the path `/eagle/argonne_tpc/model_weights/` and contact us at [atanikanti@anl.gov] or raise an issue in this repository and we will add it promptly.
+**Note:** To add new models/endpoints, please add the HF-compatible model to the path `/eagle/argonne_tpc/model_weights/` and contact us at [atanikanti@anl.gov] or raise an issue in this repository or via slack, and we will add it promptly.
+
+## Inference Execution
+These models run as part of a 12-hour job on **Sophia**, after which the node is released for other tasks. The endpoints are acquired and activated when the first query is performed by any group member, and subsequent queries by group members will re-use the running job/endpoint.
+
+The persistence capability is available. However, we are internally collecting various usage metrics and will add a persistent endpoint service shortly. 
+
+On Polaris, the models are currently run as part of a debug job with a 1-hour duration.
 
 ## Prerequisites
 
