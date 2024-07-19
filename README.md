@@ -12,7 +12,11 @@ You need to be on Argonne's network to access these endpoints. You can run this 
 - [Supported Frameworks](#supported-frameworks)
 - [API Endpoints](#api-endpoints)
 - [Available Models](#available-models)
+- [Accessing Endpoints](#accessing-alcf-inference-endpoints)
 - [Prerequisites](#prerequisites)
+  * [Python SDK](#python-sdk)
+  * [Access Tokens](#access-tokens)
+  * [Access Restrictions](#access-restrictions)
 - [Usage](#usage)
   * [Using Curl](#using-curl)
   * [Using Python](#using-python)
@@ -29,6 +33,10 @@ The OpenAI API chat completions and completions are available, with `batch` proc
 * chat completions - https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/chat/completions
 * completions - https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/completions
 
+## Accessing ALCF Inference Endpoints
+* To access the Inference endpoints, you need to be added to appropriate Globus groups.   Contact [Benoit Cote](bcote@anl.gov) or [Aditya Tanikanti](atanikanti@anl.gov) with your Globus email/ID to be added to the Globus group.
+
+
 ## Available Models
 
 * mistral-7B-instruct-v03
@@ -40,20 +48,24 @@ The OpenAI API chat completions and completions are available, with `batch` proc
 
 ## Prerequisites
 
+### Python SDK
 * A Python environment with `globus_sdk` installed:
 ```bash
 conda create -n globus_env python==3.10.12 --y
 conda activate globus_env
 pip install globus_sdk
 ```
-* Access to Argonne's network. Use VPN, Dash or ssh tunnel from the ALCF computes if working remotely.
-* Endpoints are restricted by Globus groups and policy. Contact [Benoit Cote](bcote@anl.gov) or [Aditya Tanikanti](atanikanti@anl.gov) with your Globus email/ID to be added to the Globus group.
-* Create an access token. This script creates the [access_token.txt](./access_token.txt) file.
+
+### Access Tokens
+*   Create an access token. This script creates the [access_token.txt](./access_token.txt) file.
 ```bash
 python3 generate_auth_token.py
 access_token=$(cat access_token.txt)
 ```
 **Note:** Once an `access_token` is created it will be active for 24 hours.
+
+### Access Restrictions
+* Access to the endpoinsts is restricted to systems on the Argonne's network. Use VPN, Dash or ssh tunnel from the ALCF computes if working remotely.
 
 ## Usage
 
