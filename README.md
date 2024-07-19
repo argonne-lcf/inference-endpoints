@@ -1,12 +1,12 @@
-# Inference Endpoints
-This repository provides examples of using the OpenAI API-based `ALCF Inference API` for running Large Language Models (LLMs).
+# ALCF Inference Endpoints
+This repository provides examples of using the OpenAI API-based `ALCF Inference Endpoints` for running Large Language Models (LLMs) inference.
 
 Currently, our endpoints are running on two clusters, with more to come:
 
 * Sophia  - https://data-portal-dev.cels.anl.gov/resource_server/sophia
 * Polaris - https://data-portal-dev.cels.anl.gov/resource_server/polaris
 
-**Note:** You need to be on Argonne's network to access these endpoints. Use VPN, Dash, ssh tunnels if working remotely.
+**Note:** You need to be on Argonne's network to access these endpoints. You can run this from systems within the Argonne networks, or you will need a VPN, Dash, ssh tunnels if working remotely.
 
 ## Supported Frameworks
 
