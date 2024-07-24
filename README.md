@@ -6,7 +6,7 @@ Currently, our endpoints are running on two clusters, with more to come:
 * Sophia  - https://data-portal-dev.cels.anl.gov/resource_server/sophia
 * Polaris - https://data-portal-dev.cels.anl.gov/resource_server/polaris
 
-**Note:** Endpoints are restricted by Globus groups and policy. Contact [Benoit Cote](bcote@anl.gov) or [Aditya Tanikanti](atanikanti@anl.gov) with your Globus ID to be added to the Globus group.
+**Note:** Endpoints are restricted by Globus groups and policy. Contact [Benoit Cote](mailto:bcote@anl.gov?subject=Add%20to%20Inference%20Globus%20group) or [Aditya Tanikanti](mailto:atanikanti@anl.gov?subject=Add%20to%20Inference%20Globus%20group) with your Globus ID to be added to the Globus group.
 You need to be on Argonne's network to access these endpoints. You can run from systems within the Argonne networks, or you will need a VPN, Dash, ssh tunnels if working remotely.
 
 - [Supported Frameworks](#supported-frameworks)
@@ -36,7 +36,7 @@ The OpenAI API chat completions and completions are available, with `batch` proc
 * completions - https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/completions
 
 ## Accessing ALCF Inference Endpoints
-* To access the Inference endpoints, you need to be added to appropriate Globus groups.   Contact [Benoit Cote](bcote@anl.gov) or [Aditya Tanikanti](atanikanti@anl.gov) with your Globus email/ID to be added to the Globus group.
+* To access the Inference endpoints, you need to be added to appropriate Globus groups.   Contact [Benoit Cote](mailto:bcote@anl.gov?subject=Add%20to%20Inference%20Globus%20group) or [Aditya Tanikanti](mailto:atanikanti@anl.gov?subject=Add%20to%20Inference%20Globus%20group) with your Globus email/ID to be added to the Globus group.
 
 
 ## Available Models
@@ -45,7 +45,7 @@ The OpenAI API chat completions and completions are available, with `batch` proc
 * meta-llama-3-8b-instruct
 * meta-llama-3-70b-instruct
 
-**Note:** To add new models/endpoints, please add the HF-compatible model to the path `/eagle/argonne_tpc/model_weights/` and contact us at [atanikanti@anl.gov] or raise an issue in this repository or `via slack`, and we will add it promptly. 
+**Note:** To add new models/endpoints, please add the HF-compatible model to the path `/eagle/argonne_tpc/model_weights/` and contact [Aditya Tanikanti](mailto:atanikanti@anl.gov?subject=Add%20new%20endpoint) or raise an issue in this repository or `via slack`, and we will add it promptly. 
 
 ## Inference Execution
 The models are currently run as part of a 12-hour job on `Sophia`. The endpoints are dynamically acquired and activated when the first query is performed by any group member, and subsequent queries by group members will re-use the running job/endpoint.
