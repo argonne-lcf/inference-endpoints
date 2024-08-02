@@ -41,9 +41,10 @@ The OpenAI API chat completions and completions are available, with `batch` proc
 
 ## Available Models
 
-* mistral-7B-instruct-v03
+* mistral-7B-instruct-v0.3
 * meta-llama-3-8b-instruct
 * meta-llama-3-70b-instruct
+* mixtral-8x22b-instruct-v0.1
 
 **Note:** To add new models/endpoints, please add the HF-compatible model to the path `/eagle/argonne_tpc/model_weights/` and contact [Aditya Tanikanti](mailto:atanikanti@anl.gov?subject=Add%20new%20endpoint) or raise an issue in this repository or `via slack`, and we will add it promptly. 
 
