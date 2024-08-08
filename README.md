@@ -22,6 +22,7 @@ You need to be on Argonne's network to access these endpoints. You can run from 
   * [Using Curl](#using-curl)
   * [Using Python](#using-python)
   * [Using OpenAI Package](#using-openai-package)
+- [Troubleshooting/FAQs](#troubleshooting)
 
 ## Supported Frameworks
 
@@ -386,3 +387,12 @@ python3 completions_openai.py
 ```
 
 Refer to [remote_inference_gateway.ipynb](./remote_inference_gateway.ipynb) for more detailed examples.
+
+## Troubleshooting
+1. If you see this error. 
+```bash
+requests.exceptions.ConnectTimeout: HTTPSConnectionPool(host='data-portal-dev.cels.anl.gov', port=443): Max retries exceeded with url: /resource_server/sophia/vllm/v1/chat/completions (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x1496ce979550>, 'Connection to data-portal-dev.cels.anl.gov timed out. (connect timeout=None)'))
+```
+- Check if the access token is expired and regenerate it. If you're using environment variables for the access token, ensure it is correctly set
+- Check if you are accessing the API from within the Argonne network.
+
