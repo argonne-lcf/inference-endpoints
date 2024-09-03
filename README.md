@@ -44,7 +44,9 @@ The OpenAI API chat completions and completions are available, with `batch` proc
 
 * mistral-7B-instruct-v0.3
 * meta-llama-3-8b-instruct
+* meta-llama-3.1-8b-instruct
 * meta-llama-3-70b-instruct
+* meta-llama-3.1-70b-instruct
 * mixtral-8x22b-instruct-v0.1
 
 **Note:** To add new models/endpoints, please add the HF-compatible model to the path `/eagle/argonne_tpc/model_weights/` and contact [Aditya Tanikanti](mailto:atanikanti@anl.gov?subject=Add%20new%20endpoint) or raise an issue in this repository or `via slack`, and we will add it promptly. 
@@ -142,7 +144,7 @@ access_token=$(cat access_token.txt)
 base_url="https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/completions"
 
 # Define the model and parameters
-model="meta-llama/Meta-Llama-3-8B-Instruct"
+model="meta-llama/Meta-Llama-3.1-8B-Instruct"
 temperature=0.2
 max_tokens=150
 
@@ -235,7 +237,7 @@ with open('access_token.txt', 'r') as file:
 base_url = "https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/completions"
 
 # Define the model and parameters
-model = "meta-llama/Meta-Llama-3-8B-Instruct"
+model = "meta-llama/Meta-Llama-3.1-8B-Instruct"
 temperature = 0.2
 max_tokens = 150
 
@@ -346,7 +348,7 @@ with open('access_token.txt', 'r') as file:
 base_url = "https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/completions"
 
 # Define the model and parameters
-model = "meta-llama/Meta-Llama-3-8B-Instruct"
+model = "meta-llama/Meta-Llama-3.1-8B-Instruct"
 temperature = 0.2
 max_tokens = 150
 
