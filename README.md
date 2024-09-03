@@ -52,7 +52,7 @@ The OpenAI API chat completions and completions are available, with `batch` proc
 **Note:** To add new models/endpoints, please add the HF-compatible model to the path `/eagle/argonne_tpc/model_weights/` and contact [Aditya Tanikanti](mailto:atanikanti@anl.gov?subject=Add%20new%20endpoint) or raise an issue in this repository or `via slack`, and we will add it promptly. 
 
 ## Inference Execution
-The models are currently run as part of a 12-hour job on `Sophia`. The endpoints are dynamically acquired and activated when the first query is performed by any group member, and subsequent queries by group members will re-use the running job/endpoint.
+The models are currently run as part of a 24-hour job on `Sophia`. The endpoints are dynamically acquired and activated when the first query is performed by any group member, and subsequent queries by group members will re-use the running job/endpoint.
 
 The persistence capability for the inference service is available. However, we are internally collecting various usage metrics and will add a persistent endpoint service shortly. 
 
@@ -63,7 +63,7 @@ On `Polaris`, the models are currently run as part of a debug job with a 1-hour 
 ### Python SDK
 * A Python environment with `globus_sdk` installed:
 ```bash
-conda create -n globus_env python==3.10.12 --y
+conda create -n globus_env python==3.11.9 --y
 conda activate globus_env
 pip install globus_sdk
 ```
