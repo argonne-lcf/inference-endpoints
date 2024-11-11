@@ -37,7 +37,7 @@ The OpenAI API chat completions and completions are available, with `batch` proc
 * completions - https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/completions
 
 ## Accessing ALCF Inference Endpoints
-* To access the Inference endpoints, you need to be added to appropriate Globus groups.   Contact [Benoit Cote](mailto:bcote@anl.gov?subject=Add%20to%20Inference%20Globus%20group) or [Aditya Tanikanti](mailto:atanikanti@anl.gov?subject=Add%20to%20Inference%20Globus%20group) with your Globus email/ID to be added to the Globus group.
+* To access the Inference endpoints, you need to authenticate with Globus using your Argonne or ALCF credentials.
 
 
 ## Available Models
