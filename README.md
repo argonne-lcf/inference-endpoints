@@ -403,3 +403,4 @@ requests.exceptions.ConnectTimeout: HTTPSConnectionPool(host='data-portal-dev.ce
 - Check if you are accessing the API from within the Argonne network.
 
 ## Contacts
+Contact [Benoit Cote](mailto:bcote@anl.gov?subject=Inference%20Endpoint) or [Aditya Tanikanti](mailto:atanikanti@anl.gov?subject==Inference%20Endpoint) or [ALCF Support](mailto:support@alcf.anl.gov?subject=Inference%20Endpoint)
