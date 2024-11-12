@@ -39,7 +39,7 @@ The OpenAI API chat completions and completions are available, with `batch` proc
 
 ## Accessing ALCF Inference Endpoints
 * To access the Inference endpoints, you need to authenticate with Globus using your Argonne or ALCF credentials.
-
+* Access is restricted to systems on the Argonne's network. Use VPN, Dash or ssh tunnel from the ALCF computes if working remotely.
 
 ## Available Models
 
@@ -56,7 +56,7 @@ The OpenAI API chat completions and completions are available, with `batch` proc
 **Note:** To add new models/endpoints, please add the HF-compatible model to the path `/eagle/argonne_tpc/model_weights/` and contact [Aditya Tanikanti](mailto:atanikanti@anl.gov?subject=Add%20new%20endpoint) or raise an issue in this repository or `via slack`, and we will add it promptly. 
 
 ## Inference Execution
-The models are currently run as part of a 24-hour job on `Sophia`. The endpoints are dynamically acquired and activated when the first query is performed by any group member, and subsequent queries by group members will re-use the running job/endpoint.
+The models are currently run as part of a 24-hour job on `Sophia`. The endpoints are dynamically acquired and activated when the first query is performed by any authorized user. Subsequent queries by authorized users will re-use the running job/endpoint.
 
 The persistence capability for the inference service is available. However, we are internally collecting various usage metrics and will add a persistent endpoint service shortly. 
 
@@ -79,9 +79,6 @@ python3 generate_auth_token.py
 access_token=$(cat access_token.txt)
 ```
 **Note:** Once an `access_token` is created, it will be active for 24 hours.
-
-### Access Restrictions
-* Access to the endpoinsts is restricted to systems on the Argonne's network. Use VPN, Dash or ssh tunnel from the ALCF computes if working remotely.
 
 ## Usage
 
@@ -111,7 +108,7 @@ access_token=$(cat access_token.txt)
 base_url="https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/chat/completions"
 
 # Define the model and parameters
-model="mistralai/Mistral-7B-Instruct-v0.3"
+model="meta-llama/Meta-Llama-3.1-8B-Instruct"
 temperature=0.2
 max_tokens=150
 
@@ -194,7 +191,7 @@ with open('access_token.txt', 'r') as file:
 base_url = "https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/chat/completions"
 
 # Define the model and parameters
-model = "mistralai/Mistral-7B-Instruct-v0.3"
+model = "meta-llama/Meta-Llama-3.1-8B-Instruct"
 temperature = 0.2
 max_tokens = 150
 
@@ -305,7 +302,7 @@ with open('access_token.txt', 'r') as file:
 base_url = "https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/chat/completions"
 
 # Define the model and parameters
-model = "mistralai/Mistral-7B-Instruct-v0.3"
+model = "meta-llama/Meta-Llama-3.1-8B-Instruct"
 temperature = 0.2
 max_tokens = 150
 
