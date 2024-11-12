@@ -6,7 +6,7 @@ Currently, our endpoints are running on two clusters, with more to come:
 * Sophia  - https://data-portal-dev.cels.anl.gov/resource_server/sophia
 * Polaris - https://data-portal-dev.cels.anl.gov/resource_server/polaris
 
-**Note:** Endpoints are restricted by Globus groups and policy. Contact [Benoit Cote](mailto:bcote@anl.gov?subject=Add%20to%20Inference%20Globus%20group) or [Aditya Tanikanti](mailto:atanikanti@anl.gov?subject=Add%20to%20Inference%20Globus%20group) with your Globus ID to be added to the Globus group.
+**Note:** Endpoints are restricted by Globus groups and policy. To access the Inference endpoints, you need to authenticate with Globus using your Argonne or ALCF credentials. 
 You need to be on Argonne's network to access these endpoints. You can run from systems within the Argonne networks, or you will need a VPN, Dash, ssh tunnels if working remotely.
 
 - [Supported Frameworks](#supported-frameworks)
