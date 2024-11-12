@@ -23,6 +23,7 @@ You need to be on Argonne's network to access these endpoints. You can run from 
   * [Using Python](#using-python)
   * [Using OpenAI Package](#using-openai-package)
 - [Troubleshooting/FAQs](#troubleshooting)
+- [Contact us/Support](#contacts)
 
 ## Supported Frameworks
 
@@ -401,3 +402,4 @@ requests.exceptions.ConnectTimeout: HTTPSConnectionPool(host='data-portal-dev.ce
 - Check if the access token is expired and regenerate it. If you're using environment variables for the access token, ensure it is correctly set
 - Check if you are accessing the API from within the Argonne network.
 
+## Contacts
