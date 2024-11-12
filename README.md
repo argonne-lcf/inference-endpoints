@@ -299,7 +299,7 @@ with open('access_token.txt', 'r') as file:
     access_token = file.read().strip()
 
 # Define the base URL
-base_url = "https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/chat/completions"
+base_url = "https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1"
 
 # Define the model and parameters
 model = "meta-llama/Meta-Llama-3.1-8B-Instruct"
@@ -346,7 +346,7 @@ with open('access_token.txt', 'r') as file:
     access_token = file.read().strip()
 
 # Define the base URL
-base_url = "https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/completions"
+base_url = "https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1"
 
 # Define the model and parameters
 model = "meta-llama/Meta-Llama-3.1-8B-Instruct"
