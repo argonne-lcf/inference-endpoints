@@ -54,12 +54,12 @@ On Polaris, the models are currently run as part of a **debug job** with a **1-h
 <summary>Click to expand model list</summary>
 
 - Qwen/QwQ-32B-Preview
-- Qwen/Qwen2-VL-72B-Instruct
-- Qwen/Qwen2.5-14B-Instruct
+- Qwen/Qwen2-VL-72B-Instruct (Best vision model https://huggingface.co/spaces/opencompass/open_vlm_leaderboard)
+- Qwen/Qwen2.5-14B-Instruct (Best average score for underlying model architecture https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard)
 - Qwen/Qwen2.5-7B-Instruct
 - meta-llama/Meta-Llama-3-70B-Instruct
 - meta-llama/Meta-Llama-3-8B-Instruct
-- meta-llama/Meta-Llama-3.1-405B-Instruct
+- meta-llama/Meta-Llama-3.1-405B-Instruct 
 - meta-llama/Meta-Llama-3.1-70B-Instruct
 - meta-llama/Meta-Llama-3.1-8B-Instruct
 - mgoin/Nemotron-4-340B-Instruct-hf
@@ -95,7 +95,7 @@ access_token=$(cat access_token.txt)
 
 ## 💡 Usage Examples
 
-## 🌟 Curl Request Examples
+### 🌟 Curl Request Examples
 
 <details>
     <summary>
