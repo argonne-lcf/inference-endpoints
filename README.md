@@ -13,7 +13,7 @@ The ALCF Inference Endpoints provide a robust API for running Large Language Mod
 | Sophia  | https://data-portal-dev.cels.anl.gov/resource_server/sophia |
 | Polaris | https://data-portal-dev.cels.anl.gov/resource_server/polaris |
 
-> **🔒 Access Note:** Endpoints are restricted. You'll need Argonne or ALCF credentials and be on Argonne's network.
+> **🔒 Access Note:** Endpoints are restricted. You'll need Argonne or ALCF credentials to authenticate and be on Argonne's network (Use VPN, Dash, or SSH to ANL machine).
 
 ## 🧩 Supported Frameworks
 
