@@ -32,40 +32,6 @@ https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/chat/complet
 https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/completions
 ```
 
-# 🤖 ALCF Inference Endpoints
-
-> **Unlock Powerful Large Language Model Inference at Argonne National Laboratory**
-
-## 🌐 Overview
-
-The ALCF Inference Endpoints provide a robust API for running Large Language Model (LLM) inference using [Globus Compute](https://www.globus.org/compute). 
-
-### 🖥️ Available Clusters
-
-| Cluster | Endpoint |
-|---------|----------|
-| Sophia  | https://data-portal-dev.cels.anl.gov/resource_server/sophia |
-| Polaris | https://data-portal-dev.cels.anl.gov/resource_server/polaris |
-
-> **🔒 Access Note:** Endpoints are restricted. You'll need Argonne or ALCF credentials and be on Argonne's network.
-
-## 🧩 Supported Frameworks
-
-- **vLLM** - https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm
-- **llama.cpp** (under testing) - https://data-portal-dev.cels.anl.gov/resource_server/sophia/llama-cpp
-
-## 🚀 API Endpoints
-
-### Chat Completions
-```
-https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/chat/completions
-```
-
-### Completions
-```
-https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/completions
-```
-
 ## 🧩 Inference Execution
 
 ### Sophia Cluster
@@ -137,14 +103,14 @@ access_token=$(cat access_token.txt)
     </summary>
     
 ```bash
-    #!/bin/bash
+#!/bin/bash
 
-    # Define the access token
-    access_token=$(cat access_token.txt)
+# Define the access token
+access_token=$(cat access_token.txt)
 
-    
-    curl -X GET "https://data-portal-dev.cels.anl.gov/resource_server/list-endpoints" \
-     -H "Authorization: Bearer ${access_token}"
+
+curl -X GET "https://data-portal-dev.cels.anl.gov/resource_server/list-endpoints" \
+ -H "Authorization: Bearer ${access_token}"
  ```
 </details>
 
@@ -254,6 +220,8 @@ def send_chat_request(message):
     }
     response = requests.post(url, headers=headers, data=json.dumps(data))
     return response.json()
+
+send_chat_request("What is the purpose of life?")
 ```
 </details>
 
@@ -262,6 +230,10 @@ def send_chat_request(message):
 
 ```python
 from openai import OpenAI
+
+# Load access token
+with open('access_token.txt', 'r') as file:
+    access_token = file.read().strip()
 
 client = OpenAI(
     api_key=access_token,
