@@ -287,10 +287,11 @@ response = client.chat.completions.create(
 
 <details>
 <summary>Using Vision model</summary>
+
 ```python
+
 from openai import OpenAI
 import base64
-
 
 # Load access token
 with open('access_token.txt', 'r') as file:
