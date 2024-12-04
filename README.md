@@ -1,6 +1,6 @@
 # 🤖 ALCF Inference Endpoints
 
-> **Unlock Powerful Large Language Model Inference at Argonne National Laboratory**
+> **Unlock Powerful Large Language Model Inference at Argonne Leadership Computing Facility (ALCF)**
 
 ## 🌐 Overview
 
@@ -124,7 +124,7 @@ pip install globus_sdk
 
 ### Authentication
 
-1. Generate an access token:
+Generate an access token:
 ```bash
 python3 generate_auth_token.py
 access_token=$(cat access_token.txt)
