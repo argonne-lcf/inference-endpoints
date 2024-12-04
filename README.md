@@ -32,44 +32,82 @@ https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/chat/complet
 https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/completions
 ```
 
+## 📚 Available Models
+
+### 💬 Conversational Language Models
+
+#### Qwen Family
+- Qwen/Qwen2.5-14B-Instruct
+- Qwen/Qwen2.5-7B-Instruct
+- Qwen/QwQ-32B-Preview
+
+#### Meta Llama Family
+- meta-llama/Meta-Llama-3-70B-Instruct
+- meta-llama/Meta-Llama-3-8B-Instruct
+- meta-llama/Meta-Llama-3.1-70B-Instruct
+- meta-llama/Meta-Llama-3.1-8B-Instruct
+- meta-llama/Meta-Llama-3.1-405B-Instruct
+
+#### Mistral Family
+- mistralai/Mistral-7B-Instruct-v0.3
+- mistralai/Mistral-Large-Instruct-2407
+- mistralai/Mixtral-8x22B-Instruct-v0.1
+
+#### Nvidia Nemotron Family
+- mgoin/Nemotron-4-340B-Instruct-hf
+
+### 👁️ Vision Language Models
+
+#### Qwen Family
+- Qwen/Qwen2-VL-72B-Instruct (Best vision model https://huggingface.co/spaces/opencompass/open_vlm_leaderboard)
+
+#### Meta Llama Family
+(Coming soon)
+
+### 🧲 Embedding Models
+*(Coming Soon)*
+- Semantic vector representations
+- Support for cross-language and multi-modal embeddings
+- Capabilities for:
+  - Information retrieval
+  - Semantic search
+  - Clustering and classification tasks
+- Placeholder for upcoming embedding model support
+
+### 
+> **📝 Want to add a model?** 
+> Add the HF-compatible model to `/eagle/argonne_tpc/model_weights/` and contact [Aditya Tanikanti](mailto:atanikanti@anl.gov?subject=Add%20new%20endpoint)
+
 ## 🧩 Inference Execution
 
-### Sophia Cluster
+### Performance and Wait Times
+
+When interacting with the inference endpoints, it's crucial to understand the system's operational characteristics:
+
+1. **Initial Model Loading**
+   - The first query for a "cold" model takes approximately **10-15 minutes**
+   - Loading time depends on the specific model's size
+   - A node must first be acquired and the model loaded into memory
+
+2. **Cluster Resource Constraints**
+   - These endpoints run on a High-Performance Computing (HPC) cluster
+   - The cluster is used for multiple tasks beyond inference
+   - During high-demand periods, your job might be queued
+   - You may need to wait until computational resources become available
+
+> **🚧 Future Improvements:** 
+> The team is actively working on implementing a node reservation system to mitigate wait times and improve user experience.
+
+### Cluster-Specific Details
+
+#### Sophia Cluster
 The models are currently run as part of a **24-hour job** on Sophia. Here's how the endpoint activation works:
 
 - The first query by an authorized user dynamically acquires and activates the endpoints
 - Subsequent queries by authorized users will re-use the running job/endpoint
 
-> **🔍 Persistence Note:** 
-> - Persistence capability for the inference service is available
-> - Internal usage metrics are being collected
-> - A persistent endpoint service will be added shortly
-
-### Polaris Cluster
+#### Polaris Cluster
 On Polaris, the models are currently run as part of a **debug job** with a **1-hour duration**.
-
-## 📚 Available Models
-
-<details>
-<summary>Click to expand model list</summary>
-
-- Qwen/QwQ-32B-Preview
-- Qwen/Qwen2-VL-72B-Instruct (Best vision model https://huggingface.co/spaces/opencompass/open_vlm_leaderboard)
-- Qwen/Qwen2.5-14B-Instruct (Best average score for underlying model architecture https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard)
-- Qwen/Qwen2.5-7B-Instruct
-- meta-llama/Meta-Llama-3-70B-Instruct
-- meta-llama/Meta-Llama-3-8B-Instruct
-- meta-llama/Meta-Llama-3.1-405B-Instruct 
-- meta-llama/Meta-Llama-3.1-70B-Instruct
-- meta-llama/Meta-Llama-3.1-8B-Instruct
-- mgoin/Nemotron-4-340B-Instruct-hf
-- mistralai/Mistral-7B-Instruct-v0.3
-- mistralai/Mistral-Large-Instruct-2407
-- mistralai/Mixtral-8x22B-Instruct-v0.1
-
-> **📝 Want to add a model?** 
-> Add the HF-compatible model to `/eagle/argonne_tpc/model_weights/` and contact [Aditya Tanikanti](mailto:atanikanti@anl.gov?subject=Add%20new%20endpoint)
-</details>
 
 ## 🛠️ Prerequisites
 
@@ -244,6 +282,52 @@ response = client.chat.completions.create(
     model="meta-llama/Meta-Llama-3.1-8B-Instruct",
     messages=[{"role": "user", "content": "Explain quantum computing"}]
 )
+```
+</details>
+
+<details>
+<summary>Using Vision model</summary>
+```python
+from openai import OpenAI
+import base64
+
+
+# Load access token
+with open('access_token.txt', 'r') as file:
+    access_token = file.read().strip()
+    
+# Initialize the client
+client = OpenAI(
+    api_key=access_token,
+    base_url="https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1"
+)
+
+# Function to encode image to base64
+def encode_image(image_path):
+    with open(image_path, "rb") as image_file:
+        return base64.b64encode(image_file.read()).decode('utf-8')
+
+# Prepare the image
+image_path = "scientific_diagram.png"
+base64_image = encode_image(image_path)
+
+# Create vision model request
+response = client.chat.completions.create(
+    model="Qwen/Qwen2-VL-72B-Instruct",
+    messages=[
+        {
+            "role": "user",
+            "content": [
+                {"type": "text", "text": "Describe the key components in this scientific diagram"},
+                {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{base64_image}"}}
+            ]
+        }
+    ],
+    max_tokens=300
+)
+
+# Print the model's analysis
+print(response.choices[0].message.content)
 ```
 </details>
 
