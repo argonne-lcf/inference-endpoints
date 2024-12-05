@@ -81,7 +81,7 @@ https://data-portal-dev.cels.anl.gov/resource_server/sophia/infinity/v1/embeddin
 
 ### 
 > **📝 Want to add a model?** 
-> Add the HF-compatible model to `/eagle/argonne_tpc/model_weights/` and contact [Aditya Tanikanti](mailto:atanikanti@anl.gov?subject=Add%20new%20endpoint)
+> Add the HF-compatible, framework-supported model to `/eagle/argonne_tpc/model_weights/` and contact [Aditya Tanikanti](mailto:atanikanti@anl.gov?subject=Add%20new%20endpoint)
 
 ## 🧩 Inference Execution
 
