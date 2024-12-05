@@ -40,8 +40,7 @@ https://data-portal-dev.cels.anl.gov/resource_server/sophia/infinity/v1/embeddin
 ### 
 > **📝 Note** 
 > Currently embeddings is only supported by infinity framework.
->
-> See [usage](#Usage-Examples) and/or refer to [OpenAI API](https://platform.openai.com/docs/overview) docs for examples
+> See [usage](#-usage-examples) and/or refer to [OpenAI API](https://platform.openai.com/docs/overview) docs for examples
 
 ## 📚 Available Models
 
