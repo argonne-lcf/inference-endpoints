@@ -17,8 +17,8 @@ The ALCF Inference Endpoints provide a robust API for running Large Language Mod
 
 ## 🧩 Supported Frameworks
 
-- **vLLM** - https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm
-- **llama.cpp** (under testing) - https://data-portal-dev.cels.anl.gov/resource_server/sophia/llama-cpp
+- **[vLLM](https://docs.vllm.ai/en/latest/)** - https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm
+- **[Infinity](https://michaelfeil.eu/infinity/main/)** - https://data-portal-dev.cels.anl.gov/resource_server/sophia/infinity
 
 ## 🚀 API Endpoints
 
@@ -32,9 +32,20 @@ https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/chat/complet
 https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/completions
 ```
 
+### Embeddings
+```
+https://data-portal-dev.cels.anl.gov/resource_server/sophia/infinity/v1/embeddings
+```
+
+### 
+> **📝 Note** 
+> Currently embeddings is only supported by infinity framework.
+>
+> See [usage](#Usage-Examples) and/or refer to [OpenAI API](https://platform.openai.com/docs/overview) docs for examples
+
 ## 📚 Available Models
 
-### 💬 Conversational Language Models
+### 💬 Chat Language Models
 
 #### Qwen Family
 - Qwen/Qwen2.5-14B-Instruct
@@ -59,20 +70,15 @@ https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/completions
 ### 👁️ Vision Language Models
 
 #### Qwen Family
-- Qwen/Qwen2-VL-72B-Instruct (Best vision model https://huggingface.co/spaces/opencompass/open_vlm_leaderboard)
+- Qwen/Qwen2-VL-72B-Instruct (Ranked 1 in [vision leaderboard](https://huggingface.co/spaces/opencompass/open_vlm_leaderboard))
 
 #### Meta Llama Family
-(Coming soon)
+- meta-llama/Llama-3.2-90B-Vision-Instruct
 
 ### 🧲 Embedding Models
-*(Coming Soon)*
-- Semantic vector representations
-- Support for cross-language and multi-modal embeddings
-- Capabilities for:
-  - Information retrieval
-  - Semantic search
-  - Clustering and classification tasks
-- Placeholder for upcoming embedding model support
+
+#### Nvidia Family
+- nvidia/NV-Embed-v2 (Ranked 1 in [embedding Leaderboard](https://huggingface.co/spaces/mteb/leaderboard))
 
 ### 
 > **📝 Want to add a model?** 
@@ -259,7 +265,8 @@ def send_chat_request(message):
     response = requests.post(url, headers=headers, data=json.dumps(data))
     return response.json()
 
-send_chat_request("What is the purpose of life?")
+output = send_chat_request("What is the purpose of life?")
+print(output)
 ```
 </details>
 
@@ -282,6 +289,8 @@ response = client.chat.completions.create(
     model="meta-llama/Meta-Llama-3.1-8B-Instruct",
     messages=[{"role": "user", "content": "Explain quantum computing"}]
 )
+
+print(response)
 ```
 </details>
 
@@ -289,7 +298,6 @@ response = client.chat.completions.create(
 <summary>Using Vision model</summary>
 
 ```python
-
 from openai import OpenAI
 import base64
 
@@ -328,7 +336,36 @@ response = client.chat.completions.create(
 )
 
 # Print the model's analysis
-print(response.choices[0].message.content)
+print(response.server_response)
+```
+</details>
+
+<details>
+<summary>Using Embedding model</summary>
+
+```python
+from openai import OpenAI
+import base64
+
+# Load access token
+with open('access_token.txt', 'r') as file:
+    access_token = file.read().strip()
+ 
+# Initialize the client
+client = OpenAI(
+    api_key=access_token,
+    base_url="https://data-portal-dev.cels.anl.gov/resource_server/sophia/infinity/v1"
+)
+
+# Create Embeddings
+completion = client.embeddings.create(
+  model="nvidia/NV-Embed-v2",
+  input="The food was delicious and the waiter...",
+  encoding_format="float"
+)
+
+# Print the model's analysis
+print(completion)
 ```
 </details>
 
