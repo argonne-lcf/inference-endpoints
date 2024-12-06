@@ -135,6 +135,7 @@ python3 generate_auth_token.py
 access_token=$(cat access_token.txt)
 ```
 > **⏰ Token Validity:** Active for 48 hours
+> 
 > **🔒 Access Note:** Endpoints are restricted. You'll need Argonne or ALCF credentials to authenticate and be on Argonne's network (Use VPN, Dash, or SSH to an ANL machine).
 
 ## 💡 Usage Examples
