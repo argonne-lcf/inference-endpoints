@@ -155,7 +155,7 @@ access_token=$(cat access_token.txt)
 
 <details>
     <summary>
-        List all running/queued jobs on the cluster along with the model status
+        List the status of running jobs/endpoints on the cluster
     </summary>
     
 ```bash
@@ -171,7 +171,7 @@ curl -X GET "https://data-portal-dev.cels.anl.gov/resource_server/sophia/jobs" \
 
 <details>
     <summary>
-        List all Endpoints
+        List all available endpoints
     </summary>
     
 ```bash
