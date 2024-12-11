@@ -140,6 +140,7 @@ pip install openai
 
 Generate an access token:
 ```bash
+wget https://raw.githubusercontent.com/argonne-lcf/inference-endpoints/refs/heads/main/generate_auth_token.py
 python3 generate_auth_token.py
 access_token=$(cat access_token.txt)
 ```
