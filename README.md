@@ -4,16 +4,17 @@
 
 ## 🌐 Overview
 
-The ALCF Inference Endpoints provide a robust API for running Large Language Model (LLM) inference using [Globus Compute](https://www.globus.org/compute) and different Inference frameworks. 
+The ALCF Inference Endpoints provide a robust API for running Large Language Model (LLM) inference using [Globus Compute](https://www.globus.org/compute) and different Inference frameworks on ALCF HPC Clusters. 
 
 ### 🖥️ Available Clusters
 
 | Cluster | Endpoint |
 |---------|----------|
 | Sophia  | https://data-portal-dev.cels.anl.gov/resource_server/sophia |
-| Polaris | https://data-portal-dev.cels.anl.gov/resource_server/polaris |
 
-> **🔒 Access Note:** Endpoints are restricted. You'll need Argonne or ALCF credentials to authenticate and be on Argonne's network (Use VPN, Dash, or SSH to ANL machine).
+> **🔒 Access Note:**
+> * Endpoints are restricted. You must be on Argonne's network (Use VPN, Dash, or SSH to ANL machine).
+> * You will need to authenticate with Argonne or ALCF SSO (Single Sign On) using your credentials. See [Authentication](#authentication).
 
 ## 🧩 Supported Frameworks
 
@@ -39,7 +40,7 @@ https://data-portal-dev.cels.anl.gov/resource_server/sophia/infinity/v1/embeddin
 
 ### 
 > **📝 Note** 
-> Currently embeddings is only supported by infinity framework.
+> Currently embeddings are only supported by the infinity framework.
 > See [usage](#-usage-examples) and/or refer to [OpenAI API](https://platform.openai.com/docs/overview) docs for examples
 
 ## 📚 Available Models
@@ -57,6 +58,7 @@ https://data-portal-dev.cels.anl.gov/resource_server/sophia/infinity/v1/embeddin
 - meta-llama/Meta-Llama-3.1-70B-Instruct
 - meta-llama/Meta-Llama-3.1-8B-Instruct
 - meta-llama/Meta-Llama-3.1-405B-Instruct
+- meta-llama/Llama-3.3-70B-Instruct
 
 #### Mistral Family
 - mistralai/Mistral-7B-Instruct-v0.3
@@ -65,6 +67,9 @@ https://data-portal-dev.cels.anl.gov/resource_server/sophia/infinity/v1/embeddin
 
 #### Nvidia Nemotron Family
 - mgoin/Nemotron-4-340B-Instruct-hf
+
+#### Aurora GPT Family
+- auroragpt/auroragpt-0.1-chkpt-7B-Base
 
 ### 👁️ Vision Language Models
 
@@ -81,7 +86,7 @@ https://data-portal-dev.cels.anl.gov/resource_server/sophia/infinity/v1/embeddin
 
 ### 
 > **📝 Want to add a model?** 
-> Add the HF-compatible, framework-supported model to `/eagle/argonne_tpc/model_weights/` and contact [Aditya Tanikanti](mailto:atanikanti@anl.gov?subject=Add%20new%20endpoint)
+> Add the HF-compatible, framework-supported model weights to `/eagle/argonne_tpc/model_weights/` and contact [Aditya Tanikanti](mailto:atanikanti@anl.gov?subject=Add%20new%20endpoint)
 
 ## 🧩 Inference Execution
 
@@ -95,13 +100,17 @@ When interacting with the inference endpoints, it's crucial to understand the sy
    - A node must first be acquired and the model loaded into memory
 
 2. **Cluster Resource Constraints**
-   - These endpoints run on a High-Performance Computing (HPC) cluster
+   - These endpoints run on a High-Performance Computing (HPC) cluster as PBS jobs
    - The cluster is used for multiple tasks beyond inference
    - During high-demand periods, your job might be queued
    - You may need to wait until computational resources become available
 
+3. **Job and model running status**
+   - To view currently running jobs along with the models served on the cluster you can run `curl -X GET "https://data-portal-dev.cels.anl.gov/resource_server/sophia/jobs" -H "Authorization: Bearer ${access_token}"`. See [Authentication](#authentication) for `access_token`
+     
 > **🚧 Future Improvements:** 
-> The team is actively working on implementing a node reservation system to mitigate wait times and improve user experience.
+> * The team is actively working on implementing a node reservation system to mitigate wait times and improve user experience.
+> * If you’re interested in extended model runtimes, reservations, or private model deployments, please get in touch with us.
 
 ### Cluster-Specific Details
 
@@ -110,9 +119,6 @@ The models are currently run as part of a **24-hour job** on Sophia. Here's how 
 
 - The first query by an authorized user dynamically acquires and activates the endpoints
 - Subsequent queries by authorized users will re-use the running job/endpoint
-
-#### Polaris Cluster
-On Polaris, the models are currently run as part of a **debug job** with a **1-hour duration**.
 
 ## 🛠️ Prerequisites
 
@@ -125,6 +131,9 @@ conda activate globus_env
 
 # Install required package
 pip install globus_sdk
+
+# Install optional package
+pip install openai
 ```
 
 ### Authentication
@@ -136,7 +145,9 @@ access_token=$(cat access_token.txt)
 ```
 > **⏰ Token Validity:** Active for 48 hours
 > 
-> **🔒 Access Note:** Endpoints are restricted. You'll need Argonne or ALCF credentials to authenticate and be on Argonne's network (Use VPN, Dash, or SSH to an ANL machine).
+> **🔒 Access Note:**
+> * Endpoints are restricted. You must be on Argonne's network (Use VPN, Dash, or SSH to ANL machine).
+> * You will need to authenticate with Argonne or ALCF SSO (Single Sign On) using your credentials.
 
 ## 💡 Usage Examples
 
@@ -144,7 +155,23 @@ access_token=$(cat access_token.txt)
 
 <details>
     <summary>
-        List Endpoints
+        List all running/queued jobs on the cluster along with the model status
+    </summary>
+    
+```bash
+#!/bin/bash
+
+# Define the access token
+access_token=$(cat access_token.txt)
+
+curl -X GET "https://data-portal-dev.cels.anl.gov/resource_server/sophia/jobs" \
+ -H "Authorization: Bearer ${access_token}"
+ ```
+</details>
+
+<details>
+    <summary>
+        List all Endpoints
     </summary>
     
 ```bash
