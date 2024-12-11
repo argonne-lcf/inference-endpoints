@@ -4,7 +4,7 @@
 
 ## 🌐 Overview
 
-The ALCF Inference Endpoints provide a robust API for running Large Language Model (LLM) inference using [Globus Compute](https://www.globus.org/compute) and different Inference frameworks on ALCF HPC Clusters. 
+The ALCF Inference Endpoints provide a robust API for running Large Language Model (LLM) inference using [Globus Compute](https://www.globus.org/compute) on ALCF HPC Clusters. 
 
 ### 🖥️ Available Clusters
 
