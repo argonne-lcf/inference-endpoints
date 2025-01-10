@@ -153,7 +153,7 @@ If instead you want to interface with our service for **more than 48 hours**, ge
 python3 generate_auth_token.py refresh
 ```
 
-> **⏰ Token Validity:** All access tokens are valid for 48 hours, but a refresh token will allow you to acquire new access tokens programatically without needing to re-authenticate.
+> **⏰ Token Validity:** All access tokens are valid for 48 hours, but a refresh token will allow you to acquire new access tokens programatically without needing to re-authenticate. Refresh tokens do not expire unless they are left unused for 6 months or more.
 > 
 > **🔒 Access Note:**
 > * Endpoints are restricted. You must be on Argonne's network (Use VPN, Dash, or SSH to ANL machine).
