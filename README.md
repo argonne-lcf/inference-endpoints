@@ -426,10 +426,9 @@ Then, before sending each request to the inference service, add the following li
 auth.ensure_valid_token()
 access_token = auth.access_token
 ```
+</details>
 
 # Setup and send the request ...
-```
-</details>
 
 ## 🚨 Troubleshooting
 
