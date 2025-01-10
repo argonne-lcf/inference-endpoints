@@ -138,16 +138,21 @@ pip install openai
 
 ### Authentication
 
-If you want to interface with our service for **48 hours or less**, generate an access token using the following script:
+To authenticate and generate access tokens, first download the following python scripts:
 ```bash
 wget https://raw.githubusercontent.com/argonne-lcf/inference-endpoints/refs/heads/main/generate_auth_token.py
+wget https://raw.githubusercontent.com/argonne-lcf/inference-endpoints/refs/heads/main/inference_auth_utils.py
+```
+
+If you want to interface with our service for **48 hours or less**, generate an access token using the following command:
+```bash
 python3 generate_auth_token.py
 ```
-If instead you want to interface with our service for **more than 48 hours**, generate an access token along with a refresh token using the following script:
+If instead you want to interface with our service for **more than 48 hours**, generate an access token along with a refresh token using the following command:
 ```bash
-wget https://raw.githubusercontent.com/argonne-lcf/inference-endpoints/refs/heads/main/generate_auth_token.py
 python3 generate_auth_token.py refresh
-``` 
+```
+
 > **⏰ Token Validity:** All access tokens are valid for 48 hours, but a refresh token will allow you to acquire new access tokens programatically without needing to re-authenticate.
 > 
 > **🔒 Access Note:**
@@ -403,47 +408,24 @@ print(completion)
 </details>
 
 <details>
-<summary>Setting Batch Jobs With Refresh Tokens</summary>
-To be able to use a refresh token within a batch job, you first need to have existing tokens stored in your home directory at
+<summary>Using a Refresh Token Within Batch Jobs</summary>
+Make sure you authenticated at least once on the machine you want to run your batch job:
 
 ```bash
-~/.globus/app/58fdd3bc-e1c3-4ce5-80ea-8d6b87cfb944/inference_app/tokens.json
-```
-If this file does not exist, it can be generated with the following command:
-
-```bash
-wget https://raw.githubusercontent.com/argonne-lcf/inference-endpoints/refs/heads/main/generate_auth_token.py
 python3 generate_auth_token.py refresh
 ``` 
+This will ensure that all necessary tokens are stored in your home directory. Unless your refresh token expired because it has not been used for more than 6 months, you do not have to re-execute the above command before running subsequent batch jobs.
 
+The following lines should be added at the beginning of your python script in order to load your existing tokens. This should only be executed once throughout the running job. It does not matter if your current access token is expired.
 ```python
-# The following should be executed only once at the begining of the running job
-# -----------------------------------------------------------------------------
-
-# Define inference service UUIDs and scope
-auth_client_id = "58fdd3bc-e1c3-4ce5-80ea-8d6b87cfb944"
-gateway_client_id = "681c10cc-f684-4540-bcd7-0b4df3bc26ef"
-gateway_scope = f"https://auth.globus.org/scopes/{gateway_client_id}/action_all"
-
-# Create a Globus application
-app = globus_sdk.UserApp(
-    "inference_app",
-    client_id=auth_client_id,
-    scope_requirements={gateway_client_id: [gateway_scope]},
-    config=globus_sdk.GlobusAppConfig(request_refresh_tokens=True),
-)
-
-# Recover existing tokens
-auth = app.get_authorizer(gateway_client_id)
-
-# The following should be executed everytime before sending a request to the inference service
-# --------------------------------------------------------------------------------------------
-
-# Refresh the access token if necessary
+from inference_auth_utils export get_refresh_authorizer
+auth = get_refresh_authorizer()
+```
+Then, before sending each request to the inference service, add the following lines in your python script to automatically refresh your access token if necessary, without human intervention.
+```python
 auth.ensure_valid_token()
-
-# Get the latest access token
 access_token = auth.access_token
+```
 
 # Setup and send the request ...
 ```
