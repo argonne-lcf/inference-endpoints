@@ -129,7 +129,7 @@ The models are currently run as part of a **24-hour job** on Sophia. Here's how 
 conda create -n globus_env python==3.11.9 --y
 conda activate globus_env
 
-# Install required package
+# Install Globus SDK (must be at least version 3.46.0)
 pip install globus_sdk
 
 # Install optional package
@@ -138,13 +138,17 @@ pip install openai
 
 ### Authentication
 
-Generate an access token:
+If you want to interface with our service for **48 hours or less**, generate an access token using the following script:
 ```bash
 wget https://raw.githubusercontent.com/argonne-lcf/inference-endpoints/refs/heads/main/generate_auth_token.py
 python3 generate_auth_token.py
-access_token=$(cat access_token.txt)
 ```
-> **⏰ Token Validity:** Active for 48 hours
+If you want to interface with our service for **more than 48 hours**, generate an access token along with a refresh token using the following script:
+```bash
+wget https://raw.githubusercontent.com/argonne-lcf/inference-endpoints/refs/heads/main/generate_auth_token.py
+python3 generate_auth_token.py refresh
+```
+> **⏰ Token Validity:** All access tokens are valid for 48 hours, but a refresh token will allow you to acquire new access tokens programatically without needing to re-authenticate.
 > 
 > **🔒 Access Note:**
 > * Endpoints are restricted. You must be on Argonne's network (Use VPN, Dash, or SSH to ANL machine).
