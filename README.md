@@ -403,7 +403,7 @@ print(completion)
 </details>
 
 <details>
-<summary>Setting batch jobs with a refresh token</summary>
+<summary>Setting Batch Jobs With Refresh Tokens</summary>
 To be able to use a refresh token within a batch job, you first need to have existing tokens stored in your home directory at
 
 ```bash
