@@ -143,7 +143,7 @@ If you want to interface with our service for **48 hours or less**, generate an 
 wget https://raw.githubusercontent.com/argonne-lcf/inference-endpoints/refs/heads/main/generate_auth_token.py
 python3 generate_auth_token.py
 ```
-If instead you want to interface with our service for **more than 48 hours**, generate an access token along with a refresh token using the script below. This script will re-use existing tokens if previously generated, and will generate a new access token if the current one is expired.
+If instead you want to interface with our service for **more than 48 hours**, generate an access token along with a refresh token using the following script:
 ```bash
 wget https://raw.githubusercontent.com/argonne-lcf/inference-endpoints/refs/heads/main/generate_auth_token.py
 python3 generate_auth_token.py refresh
