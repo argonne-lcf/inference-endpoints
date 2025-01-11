@@ -138,22 +138,25 @@ pip install openai
 
 ### Authentication
 
-To authenticate and generate access tokens, first download the following python scripts:
+Download the script to manage access tokens:
 ```bash
-wget https://raw.githubusercontent.com/argonne-lcf/inference-endpoints/refs/heads/main/generate_auth_token.py
-wget https://raw.githubusercontent.com/argonne-lcf/inference-endpoints/refs/heads/main/inference_auth_utils.py
+wget https://raw.githubusercontent.com/argonne-lcf/inference-endpoints/refs/heads/main/inference_auth_token.py
 ```
+Authenticate with your Globus account:
+```bash
+python3 inference_auth_token.py authenticate
+```
+The above command will generate an access token and a refresh token, and store them in your home directory. If you need to re-authenticate from scratch in order to change Globus account, type the following command:
+```bash
+python3 inference_auth_token.py authenticate --force
+```
+View your access token:
+```bash
+python3 inference_auth_token.py get_access_token
+```
+If your current access token is expired, the above command will atomatically generate a new token without human intervention.
 
-If you want to interface with our service for **48 hours or less**, generate an access token using the following command:
-```bash
-python3 generate_auth_token.py
-```
-If instead you want to interface with our service for **more than 48 hours**, generate an access token along with a refresh token using the following command:
-```bash
-python3 generate_auth_token.py refresh
-```
-
-> **⏰ Token Validity:** All access tokens are valid for 48 hours, but a refresh token will allow you to acquire new access tokens programatically without needing to re-authenticate. Refresh tokens do not expire unless they are left unused for 6 months or more.
+> **⏰ Token Validity:** All access tokens are valid for 48 hours, but the refresh token will allow you to acquire new access tokens programatically without needing to re-authenticate. Refresh tokens do not expire unless they are left unused for 6 months or more.
 > 
 > **🔒 Access Note:**
 > * Endpoints are restricted. You must be on Argonne's network (Use VPN, Dash, or SSH to ANL machine).
@@ -171,8 +174,8 @@ python3 generate_auth_token.py refresh
 ```bash
 #!/bin/bash
 
-# Define the access token
-access_token=$(cat access_token.txt)
+# Get your access token
+access_token=$(python3 inference_auth_token.py get_access_token)
 
 curl -X GET "https://data-portal-dev.cels.anl.gov/resource_server/sophia/jobs" \
  -H "Authorization: Bearer ${access_token}"
@@ -187,8 +190,8 @@ curl -X GET "https://data-portal-dev.cels.anl.gov/resource_server/sophia/jobs" \
 ```bash
 #!/bin/bash
 
-# Define the access token
-access_token=$(cat access_token.txt)
+# Get your access token
+access_token=$(python3 inference_auth_token.py get_access_token)
 
 
 curl -X GET "https://data-portal-dev.cels.anl.gov/resource_server/list-endpoints" \
@@ -202,8 +205,8 @@ curl -X GET "https://data-portal-dev.cels.anl.gov/resource_server/list-endpoints
 ```bash
 #!/bin/bash
 
-# Define the access token
-access_token=$(cat access_token.txt)
+# Get your access token
+access_token=$(python3 inference_auth_token.py get_access_token)
 
 # Define the base URL
 base_url="https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/chat/completions"
@@ -242,8 +245,8 @@ done
 ```bash
 #!/bin/bash
 
-# Define the access token
-access_token=$(cat access_token.txt)
+# Get your access token
+access_token=$(python3 inference_auth_token.py get_access_token)
 
 # Define the base URL
 base_url="https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/completions"
@@ -284,10 +287,10 @@ done
 ```python
 import requests
 import json
+from inference_auth_token import get_access_token
 
-# Load access token
-with open('access_token.txt', 'r') as file:
-    access_token = file.read().strip()
+# Get your access token
+access_token = get_access_token()
 
 # Chat Completions Example
 def send_chat_request(message):
@@ -313,10 +316,10 @@ print(output)
 
 ```python
 from openai import OpenAI
+from inference_auth_token import get_access_token
 
-# Load access token
-with open('access_token.txt', 'r') as file:
-    access_token = file.read().strip()
+# Get your access token
+access_token = get_access_token()
 
 client = OpenAI(
     api_key=access_token,
@@ -338,10 +341,10 @@ print(response)
 ```python
 from openai import OpenAI
 import base64
+from inference_auth_token import get_access_token
 
-# Load access token
-with open('access_token.txt', 'r') as file:
-    access_token = file.read().strip()
+# Get your access token
+access_token = get_access_token()
     
 # Initialize the client
 client = OpenAI(
@@ -384,10 +387,10 @@ print(response.server_response)
 ```python
 from openai import OpenAI
 import base64
+from inference_auth_token import get_access_token
 
-# Load access token
-with open('access_token.txt', 'r') as file:
-    access_token = file.read().strip()
+# Get your access token
+access_token = get_access_token()
  
 # Initialize the client
 client = OpenAI(
@@ -408,13 +411,13 @@ print(completion)
 </details>
 
 <details>
-<summary>Using a Refresh Token Within Batch Jobs</summary>
-Make sure you authenticated at least once on the machine you want to run your batch job:
+<summary>Using Refresh Tokens Within Batch Jobs</summary>
+Make sure you authenticated at least once on the machine you want to run your job:
 
 ```bash
-python3 generate_auth_token.py refresh
+python3 inference_auth_token.py authenticate
 ``` 
-This will ensure that all necessary tokens are stored in your home directory. Unless your refresh token expired because it has not been used for more than 6 months, you do not have to re-execute the above command before running subsequent batch jobs.
+You do not have to re-execute the above command before running subsequent batch jobs, unlesss your refresh token has expired following 6 months of inactivity.
 
 The following lines should be added at the beginning of your python script in order to load your existing tokens. This should only be executed once throughout the running job. It does not matter if your current access token is expired.
 ```python
@@ -427,8 +430,6 @@ auth.ensure_valid_token()
 access_token = auth.access_token
 ```
 </details>
-
-# Setup and send the request ...
 
 ## 🚨 Troubleshooting
 
