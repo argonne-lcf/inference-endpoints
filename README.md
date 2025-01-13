@@ -421,7 +421,7 @@ You do not have to re-execute the above command before running subsequent batch 
 
 The following lines should be added at the beginning of your python script in order to load your existing tokens. This should only be executed once throughout the running job. It does not matter if your current access token is expired.
 ```python
-from inference_auth_utils export get_refresh_authorizer
+from inference_auth_token export get_refresh_authorizer
 auth = get_refresh_authorizer()
 ```
 Then, before sending each request to the inference service, add the following lines in your python script to automatically refresh your access token if necessary, without human intervention.
