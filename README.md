@@ -412,6 +412,9 @@ print(completion)
 
 <details>
 <summary>Using Refresh Tokens Within Batch Jobs</summary>
+
+**Prerequisites**
+
 Make sure you authenticated at least once on the machine you want to run your job:
 
 ```bash
@@ -419,16 +422,24 @@ python3 inference_auth_token.py authenticate
 ``` 
 You do not have to re-execute the above command before running subsequent batch jobs, unlesss your refresh token has expired following 6 months of inactivity.
 
-The following lines should be added at the beginning of your python script in order to load your existing tokens. This should only be executed once throughout the running job. It does not matter if your current access token is expired.
+**Single-thread jobs**
+
+If your job only contains one thread, you can simply call the `get_access_token()` function before each inference request to re-use or automatically re-generate a valid access token:
 ```python
-from inference_auth_token export get_refresh_authorizer
-auth = get_refresh_authorizer()
+from inference_auth_token export access_token
+access_token = get_access_token() # Once before each inference request
 ```
-Then, before sending each request to the inference service, add the following lines in your python script to automatically refresh your access token if necessary, without human intervention.
+
+**Multi-thread jobs**
+
+If your job uses multiple threads, it is recommended that you *lock* the `ensure_valid_token()` function in order to preserve the integrity of the common `tokens.json` file, which stores your tokens:
 ```python
-auth.ensure_valid_token()
-access_token = auth.access_token
+from inference_auth_token export get_auth_object
+auth = get_auth_object() # Once at the begining of your job
+auth.ensure_valid_token() # [Needs to be locked] refresh access token if necessary
+access_token = auth.access_token # Gather your access token
 ```
+
 </details>
 
 ## 🚨 Troubleshooting
