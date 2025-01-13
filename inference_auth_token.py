@@ -15,8 +15,8 @@ GATEWAY_SCOPE = f"https://auth.globus.org/scopes/{GATEWAY_CLIENT_ID}/action_all"
 TOKENS_PATH = f"{os.path.expanduser('~')}/.globus/app/{AUTH_CLIENT_ID}/{APP_NAME}/tokens.json"
 
 
-# Get refresh authorizer
-def get_refresh_authorizer():
+# Get refresh authorizer object
+def get_auth_object():
     """
     Create a Globus UserApp with the inference service scope
     and trigger the authentication process. If authentication
@@ -34,16 +34,15 @@ def get_refresh_authorizer():
     # Authenticate using your Globus account or reuse existing tokens
     auth = app.get_authorizer(GATEWAY_CLIENT_ID)
 
-    # Make sure the access token is valid
-    auth.ensure_valid_token()
-
     # Return the Globus refresh token authorizer
     return auth
 
 
 # Get access token
 def get_access_token():
-    return get_refresh_authorizer().access_token
+    auth = get_auth_object()
+    auth.ensure_valid_token()
+    return auth.access_token
 
 
 # If this file is executed as a script ...
@@ -74,8 +73,8 @@ if __name__ == "__main__":
             if os.path.isfile(TOKENS_PATH):
                 os.remove(TOKENS_PATH)
 
-        # Authenticate or refresh token if necessary
-        auth = get_refresh_authorizer()
+        # Authenticate using Globus account
+        _ = get_auth_object()
 
     # Get token
     elif args.action == GET_ACCESS_TOKEN_ACTION:
