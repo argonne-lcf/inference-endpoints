@@ -70,6 +70,12 @@ https://data-portal-dev.cels.anl.gov/resource_server/sophia/infinity/v1/embeddin
 
 #### Aurora GPT Family
 - auroragpt/auroragpt-0.1-chkpt-7B-Base
+- auroragpt/auroragpt-0.1-chkpt-7B-IT
+- auroragpt/auroragpt-0.1-chkpt-7B-KTO
+- auroragpt/auroragpt-0.1-chkpt-7B-DPO
+
+### Deepseek Family
+- deepseek-ai/DeepSeek-V3
 
 ### 👁️ Vision Language Models
 
@@ -129,7 +135,7 @@ The models are currently run as part of a **24-hour job** on Sophia. Here's how 
 conda create -n globus_env python==3.11.9 --y
 conda activate globus_env
 
-# Install required package
+# Install Globus SDK (must be at least version 3.46.0)
 pip install globus_sdk
 
 # Install optional package
@@ -138,13 +144,25 @@ pip install openai
 
 ### Authentication
 
-Generate an access token:
+Download the script to manage access tokens:
 ```bash
-wget https://raw.githubusercontent.com/argonne-lcf/inference-endpoints/refs/heads/main/generate_auth_token.py
-python3 generate_auth_token.py
-access_token=$(cat access_token.txt)
+wget https://raw.githubusercontent.com/argonne-lcf/inference-endpoints/refs/heads/main/inference_auth_token.py
 ```
-> **⏰ Token Validity:** Active for 48 hours
+Authenticate with your Globus account:
+```bash
+python3 inference_auth_token.py authenticate
+```
+The above command will generate an access token and a refresh token, and store them in your home directory. If you need to re-authenticate from scratch in order to change Globus account, type the following command:
+```bash
+python3 inference_auth_token.py authenticate --force
+```
+View your access token:
+```bash
+python3 inference_auth_token.py get_access_token
+```
+If your current access token is expired, the above command will atomatically generate a new token without human intervention.
+
+> **⏰ Token Validity:** All access tokens are valid for 48 hours, but the refresh token will allow you to acquire new access tokens programatically without needing to re-authenticate. Refresh tokens do not expire unless they are left unused for 6 months or more.
 > 
 > **🔒 Access Note:**
 > * Endpoints are restricted. You must be on Argonne's network (Use VPN, Dash, or SSH to ANL machine).
@@ -162,8 +180,8 @@ access_token=$(cat access_token.txt)
 ```bash
 #!/bin/bash
 
-# Define the access token
-access_token=$(cat access_token.txt)
+# Get your access token
+access_token=$(python3 inference_auth_token.py get_access_token)
 
 curl -X GET "https://data-portal-dev.cels.anl.gov/resource_server/sophia/jobs" \
  -H "Authorization: Bearer ${access_token}"
@@ -178,8 +196,8 @@ curl -X GET "https://data-portal-dev.cels.anl.gov/resource_server/sophia/jobs" \
 ```bash
 #!/bin/bash
 
-# Define the access token
-access_token=$(cat access_token.txt)
+# Get your access token
+access_token=$(python3 inference_auth_token.py get_access_token)
 
 
 curl -X GET "https://data-portal-dev.cels.anl.gov/resource_server/list-endpoints" \
@@ -193,8 +211,8 @@ curl -X GET "https://data-portal-dev.cels.anl.gov/resource_server/list-endpoints
 ```bash
 #!/bin/bash
 
-# Define the access token
-access_token=$(cat access_token.txt)
+# Get your access token
+access_token=$(python3 inference_auth_token.py get_access_token)
 
 # Define the base URL
 base_url="https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/chat/completions"
@@ -233,8 +251,8 @@ done
 ```bash
 #!/bin/bash
 
-# Define the access token
-access_token=$(cat access_token.txt)
+# Get your access token
+access_token=$(python3 inference_auth_token.py get_access_token)
 
 # Define the base URL
 base_url="https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/completions"
@@ -275,10 +293,10 @@ done
 ```python
 import requests
 import json
+from inference_auth_token import get_access_token
 
-# Load access token
-with open('access_token.txt', 'r') as file:
-    access_token = file.read().strip()
+# Get your access token
+access_token = get_access_token()
 
 # Chat Completions Example
 def send_chat_request(message):
@@ -304,10 +322,10 @@ print(output)
 
 ```python
 from openai import OpenAI
+from inference_auth_token import get_access_token
 
-# Load access token
-with open('access_token.txt', 'r') as file:
-    access_token = file.read().strip()
+# Get your access token
+access_token = get_access_token()
 
 client = OpenAI(
     api_key=access_token,
@@ -324,15 +342,15 @@ print(response)
 </details>
 
 <details>
-<summary>Using Vision model</summary>
+<summary>Using Vision Model</summary>
 
 ```python
 from openai import OpenAI
 import base64
+from inference_auth_token import get_access_token
 
-# Load access token
-with open('access_token.txt', 'r') as file:
-    access_token = file.read().strip()
+# Get your access token
+access_token = get_access_token()
     
 # Initialize the client
 client = OpenAI(
@@ -370,15 +388,15 @@ print(response.server_response)
 </details>
 
 <details>
-<summary>Using Embedding model</summary>
+<summary>Using Embedding Model</summary>
 
 ```python
 from openai import OpenAI
 import base64
+from inference_auth_token import get_access_token
 
-# Load access token
-with open('access_token.txt', 'r') as file:
-    access_token = file.read().strip()
+# Get your access token
+access_token = get_access_token()
  
 # Initialize the client
 client = OpenAI(
