@@ -70,6 +70,12 @@ https://data-portal-dev.cels.anl.gov/resource_server/sophia/infinity/v1/embeddin
 
 #### Aurora GPT Family
 - auroragpt/auroragpt-0.1-chkpt-7B-Base
+- auroragpt/auroragpt-0.1-chkpt-7B-IT
+- auroragpt/auroragpt-0.1-chkpt-7B-KTO
+- auroragpt/auroragpt-0.1-chkpt-7B-DPO
+
+### Deepseek Family
+- deepseek-ai/DeepSeek-V3
 
 ### 👁️ Vision Language Models
 
