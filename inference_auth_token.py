@@ -14,9 +14,22 @@ GATEWAY_SCOPE = f"https://auth.globus.org/scopes/{GATEWAY_CLIENT_ID}/action_all"
 # Path where access and refresh tokens are stored
 TOKENS_PATH = f"{os.path.expanduser('~')}/.globus/app/{AUTH_CLIENT_ID}/{APP_NAME}/tokens.json"
 
+# Allowed identity provider domains
+ALLOWED_DOMAINS = ["anl.gov", "alcf.anl.gov"]
+
+# Globus authorizer parameters to point to specific identity providers
+GA_PARAMS = globus_sdk.gare.GlobusAuthorizationParameters(session_required_single_domain=ALLOWED_DOMAINS)
+
+
+# Error handler to guide user through specific identity providers 
+class DomainBasedErrorHandler:
+    def __call__(self, app, error):
+        print(f"Encountered error '{error}', initiating login...")
+        app.login(auth_params=GA_PARAMS)
+
 
 # Get refresh authorizer object
-def get_auth_object():
+def get_auth_object(force=False):
     """
     Create a Globus UserApp with the inference service scope
     and trigger the authentication process. If authentication
@@ -28,8 +41,15 @@ def get_auth_object():
         APP_NAME,
         client_id=AUTH_CLIENT_ID,
         scope_requirements={GATEWAY_CLIENT_ID: [GATEWAY_SCOPE]},
-        config=globus_sdk.GlobusAppConfig(request_refresh_tokens=True),
+        config=globus_sdk.GlobusAppConfig(
+            request_refresh_tokens=True,
+            token_validation_error_handler=DomainBasedErrorHandler()
+        ),
     )
+
+    # Force re-login if required
+    if force:
+        app.login(auth_params=GA_PARAMS)
 
     # Authenticate using your Globus account or reuse existing tokens
     auth = app.get_authorizer(GATEWAY_CLIENT_ID)
@@ -80,13 +100,8 @@ if __name__ == "__main__":
     # Authentication
     if args.action == AUTHENTICATE_ACTION:
         
-        # Delete current tokens.json file if authentication is forced
-        if args.force:
-            if os.path.isfile(TOKENS_PATH):
-                os.remove(TOKENS_PATH)
-
         # Authenticate using Globus account
-        _ = get_auth_object()
+        _ = get_auth_object(force=args.force)
 
     # Get token
     elif args.action == GET_ACCESS_TOKEN_ACTION:
