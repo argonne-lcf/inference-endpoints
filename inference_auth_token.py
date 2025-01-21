@@ -1,4 +1,5 @@
 import globus_sdk
+from globus_sdk.login_flows import LocalServerLoginFlowManager # Needed to access globus_sdk.gare
 import os.path
 
 # Globus UserApp name
