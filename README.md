@@ -75,6 +75,7 @@ https://data-portal-dev.cels.anl.gov/resource_server/sophia/infinity/v1/embeddin
 - auroragpt/auroragpt-0.1-chkpt-7B-DPO
 
 ### Deepseek Family
+- deepseek-ai/DeepSeek-R1
 - deepseek-ai/DeepSeek-V3
 
 ### 👁️ Vision Language Models
