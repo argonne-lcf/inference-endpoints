@@ -69,14 +69,19 @@ https://data-portal-dev.cels.anl.gov/resource_server/sophia/infinity/v1/embeddin
 - mgoin/Nemotron-4-340B-Instruct-hf
 
 #### Aurora GPT Family
-- auroragpt/auroragpt-0.1-chkpt-7B-Base
-- auroragpt/auroragpt-0.1-chkpt-7B-IT
-- auroragpt/auroragpt-0.1-chkpt-7B-KTO
-- auroragpt/auroragpt-0.1-chkpt-7B-DPO
+- argonne-private/AuroraGPT-7B (previously called auroragpt/auroragpt-0.1-chkpt-7B-Base)
+- argonne-private/AuroraGPT-IT-v4-0125 (previously called auroragpt/auroragpt-0.1-chkpt-7B-IT)
+- argonne-private/AuroraGPT-Tulu3-SFT-0125
+- argonne-private/AuroraGPT-KTO-1902 (previously called auroragpt/auroragpt-0.1-chkpt-7B-KTO)
+- argonne-private/AuroraGPT-DPO-1902 (previously called auroragpt/auroragpt-0.1-chkpt-7B-DPO)
+- argonne-private/AuroraGPT-SFT-190
 
 ### Deepseek Family
-- deepseek-ai/DeepSeek-R1
-- deepseek-ai/DeepSeek-V3
+- deepseek-ai/DeepSeek-R1 (Not supported on A100. Testing)
+- deepseek-ai/DeepSeek-V3 (Not supported on A100. Testing)
+
+### Allenai Family
+- allenai/Llama-3.1-Tulu-3-405B
 
 ### 👁️ Vision Language Models
 
