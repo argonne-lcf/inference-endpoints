@@ -158,7 +158,9 @@ Authenticate with your Globus account:
 ```bash
 python3 inference_auth_token.py authenticate
 ```
-The above command will generate an access token and a refresh token, and store them in your home directory. If you need to re-authenticate from scratch in order to change Globus account, first logout from your account by visiting [https://app.globus.org/logout](https://app.globus.org/logout), and type the following command:
+The above command will generate an access token and a refresh token, and store them in your home directory. 
+
+If you need to re-authenticate from scratch in order to 1) change Globus account, or 2) resolve a `Permission denied from internal policies` error, first logout from your account by visiting [https://app.globus.org/logout](https://app.globus.org/logout), and type the following command:
 ```bash
 python3 inference_auth_token.py authenticate --force
 ```
