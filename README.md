@@ -168,7 +168,7 @@ python3 inference_auth_token.py get_access_token
 ```
 If your current access token is expired, the above command will atomatically generate a new token without human intervention.
 
-> **⏰ Token Validity:** All access tokens are valid for 48 hours, but the refresh token will allow you to acquire new access tokens programatically without needing to re-authenticate. Refresh tokens do not expire unless they are left unused for 6 months or more.
+> **⏰ Token Validity:** All access tokens are valid for 48 hours, but the refresh token will allow you to acquire new access tokens programatically without needing to re-authenticate. Refresh tokens do not expire unless they are left unused for 6 months or more. However, an internal policy will force users to re-authenticate every 7 days.
 > 
 > **🔒 Access Note:**
 > * Endpoints are restricted. You must be on Argonne's network (Use VPN, Dash, or SSH to ANL machine).
