@@ -77,8 +77,8 @@ https://data-portal-dev.cels.anl.gov/resource_server/sophia/infinity/v1/embeddin
 - argonne-private/AuroraGPT-SFT-190
 
 ### Deepseek Family
-- deepseek-ai/DeepSeek-R1 (Not supported on A100. Testing)
-- deepseek-ai/DeepSeek-V3 (Not supported on A100. Testing)
+- deepseek-ai/DeepSeek-R1 (Not supported natively on A100 GPUs. Under Testing)
+- deepseek-ai/DeepSeek-V3 (Not supported natively on A100 GPUs. Under Testing)
 
 ### Allenai Family
 - allenai/Llama-3.1-Tulu-3-405B
