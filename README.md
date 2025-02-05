@@ -156,17 +156,17 @@ wget https://raw.githubusercontent.com/argonne-lcf/inference-endpoints/refs/head
 ```
 Authenticate with your Globus account:
 ```bash
-python3 inference_auth_token.py authenticate
+python inference_auth_token.py authenticate
 ```
 The above command will generate an access token and a refresh token, and store them in your home directory. 
 
 If you need to re-authenticate from scratch in order to 1) change Globus account, or 2) resolve a `Permission denied from internal policies` error, first logout from your account by visiting [https://app.globus.org/logout](https://app.globus.org/logout), and type the following command:
 ```bash
-python3 inference_auth_token.py authenticate --force
+python inference_auth_token.py authenticate --force
 ```
 View your access token:
 ```bash
-python3 inference_auth_token.py get_access_token
+python inference_auth_token.py get_access_token
 ```
 If your current access token is expired, the above command will atomatically generate a new token without human intervention.
 
@@ -189,7 +189,7 @@ If your current access token is expired, the above command will atomatically gen
 #!/bin/bash
 
 # Get your access token
-access_token=$(python3 inference_auth_token.py get_access_token)
+access_token=$(python inference_auth_token.py get_access_token)
 
 curl -X GET "https://data-portal-dev.cels.anl.gov/resource_server/sophia/jobs" \
  -H "Authorization: Bearer ${access_token}"
@@ -205,7 +205,7 @@ curl -X GET "https://data-portal-dev.cels.anl.gov/resource_server/sophia/jobs" \
 #!/bin/bash
 
 # Get your access token
-access_token=$(python3 inference_auth_token.py get_access_token)
+access_token=$(python inference_auth_token.py get_access_token)
 
 
 curl -X GET "https://data-portal-dev.cels.anl.gov/resource_server/list-endpoints" \
@@ -220,7 +220,7 @@ curl -X GET "https://data-portal-dev.cels.anl.gov/resource_server/list-endpoints
 #!/bin/bash
 
 # Get your access token
-access_token=$(python3 inference_auth_token.py get_access_token)
+access_token=$(python inference_auth_token.py get_access_token)
 
 # Define the base URL
 base_url="https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/chat/completions"
@@ -260,7 +260,7 @@ done
 #!/bin/bash
 
 # Get your access token
-access_token=$(python3 inference_auth_token.py get_access_token)
+access_token=$(python inference_auth_token.py get_access_token)
 
 # Define the base URL
 base_url="https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/completions"
