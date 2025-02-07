@@ -127,10 +127,11 @@ When interacting with the inference endpoints, it's crucial to understand the sy
 ### Cluster-Specific Details
 
 #### Sophia Cluster
-The models are currently run as part of a **24-hour job** on Sophia. Here's how the endpoint activation works:
+The models currently run as part of a **24-hour job** on Sophia. Here's how the endpoint activation works:
 
-- The first query by an authorized user dynamically acquires and activates the endpoints
-- Subsequent queries by authorized users will re-use the running job/endpoint
+- The first query by a user dynamically acquires and activates the endpoints (approximately **10-15 minutes**).
+- Subsequent queries by users will re-use the running job/endpoint.
+- Running endpoints that are idle for more than 2 hours will be terminated in order to re-allocate resources for other HPC jobs.
 
 ## 🛠️ Prerequisites
 
