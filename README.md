@@ -2,10 +2,65 @@
 
 > **Unlock Powerful Large Language Model Inference at Argonne Leadership Computing Facility (ALCF)**
 
+### Table of Content
+
+<details>
+    <summary><a href=#overview>Overview</a></summary>
+        &emsp;&ensp; <a href=#overview-available-clusters>Available Clusters</a>
+</details>
+
+<details>
+    <summary><a href=#supported-frameworks>Supported Frameworks</a></summary>
+</details>
+
+<details>
+    <summary><a href=#api-endpoints>API Endpoints</a></summary>
+        &emsp;&ensp; <a href=#api-endpoints-chat-completions>Chat Completions</a><br>
+        &emsp;&ensp; <a href=#api-endpoints-completions>Completions</a><br>
+        &emsp;&ensp; <a href=#api-endpoints-embeddings>Embeddings</a>
+</details>
+
+<details>
+    <summary><a href=#available-models>Available Models</a></summary>
+        &emsp;&ensp; <a href=#available-models-chat-language-models>Chat Language Models</a><br>
+        &emsp;&ensp; <a href=#available-models-deepseek-family>Deepseek Family</a><br>
+        &emsp;&ensp; <a href=#available-models-allenai-family>Allenai Family</a><br>
+        &emsp;&ensp; <a href=#available-models-vision-language-models>Vision Language Models</a><br>
+        &emsp;&ensp; <a href=#available-models-embedding-models>Embedding Models</a>
+</details>
+
+<details>
+    <summary><a href=#inference-execution>Inference Execution</a></summary>
+        &emsp;&ensp; <a href=#></a>
+</details>
+
+<details>
+    <summary><a href=#prerequisites>Prerequisites</a></summary>
+        &emsp;&ensp; <a href=#></a>
+</details>
+
+<details>
+    <summary><a href=#usage-examples>Usage Examples</a></summary>
+        &emsp;&ensp; <a href=#></a>
+</details>
+
+<details>
+    <summary><a href=#troubleshooting>Troubleshooting</a></summary>
+        &emsp;&ensp; <a href=#></a>
+</details>
+
+<details>
+    <summary><a href=#contact-us>Contact Us</a></summary>
+        &emsp;&ensp; <a href=#></a>
+</details>
+
+
+<a id="overview"></a>
 ## 🌐 Overview
 
 The ALCF Inference Endpoints provide a robust API for running Large Language Model (LLM) inference using [Globus Compute](https://www.globus.org/compute) on ALCF HPC Clusters. 
 
+<a id="overview-available-clusters"></a>
 ### 🖥️ Available Clusters
 
 | Cluster | Endpoint |
@@ -16,23 +71,28 @@ The ALCF Inference Endpoints provide a robust API for running Large Language Mod
 > * Endpoints are restricted. You must be on Argonne's network (Use VPN, Dash, or SSH to ANL machine).
 > * You will need to authenticate with Argonne or ALCF SSO (Single Sign On) using your credentials. See [Authentication](#authentication).
 
+<a id="supported-frameworks"></a>
 ## 🧩 Supported Frameworks
 
 - **[vLLM](https://docs.vllm.ai/en/latest/)** - https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm
 - **[Infinity](https://michaelfeil.eu/infinity/main/)** - https://data-portal-dev.cels.anl.gov/resource_server/sophia/infinity
 
+<a id="api-endpoints"></a>
 ## 🚀 API Endpoints
 
+<a id="api-endpoints-chat-completions"></a>
 ### Chat Completions
 ```
 https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/chat/completions
 ```
 
+<a id="api-endpoints-completions"></a>
 ### Completions
 ```
 https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/completions
 ```
 
+<a id="api-endpoints-embeddings"></a>
 ### Embeddings
 ```
 https://data-portal-dev.cels.anl.gov/resource_server/sophia/infinity/v1/embeddings
@@ -43,8 +103,10 @@ https://data-portal-dev.cels.anl.gov/resource_server/sophia/infinity/v1/embeddin
 > Currently embeddings are only supported by the infinity framework.
 > See [usage](#-usage-examples) and/or refer to [OpenAI API](https://platform.openai.com/docs/overview) docs for examples
 
+<a id="available-models"></a>
 ## 📚 Available Models
 
+<a id="available-models-chat-language-models"></a>
 ### 💬 Chat Language Models
 
 #### Qwen Family
@@ -76,13 +138,16 @@ https://data-portal-dev.cels.anl.gov/resource_server/sophia/infinity/v1/embeddin
 - argonne-private/AuroraGPT-DPO-1902 (previously called auroragpt/auroragpt-0.1-chkpt-7B-DPO)
 - argonne-private/AuroraGPT-SFT-190
 
+<a id="available-models-deepseek-family"></a>
 ### Deepseek Family
 - deepseek-ai/DeepSeek-R1 (Not supported natively on A100 GPUs. Under Testing)
 - deepseek-ai/DeepSeek-V3 (Not supported natively on A100 GPUs. Under Testing)
 
+<a id="available-models-allenai-family"></a>
 ### Allenai Family
 - allenai/Llama-3.1-Tulu-3-405B
 
+<a id="available-models-vision-language-models"></a>
 ### 👁️ Vision Language Models
 
 #### Qwen Family
@@ -91,6 +156,7 @@ https://data-portal-dev.cels.anl.gov/resource_server/sophia/infinity/v1/embeddin
 #### Meta Llama Family
 - meta-llama/Llama-3.2-90B-Vision-Instruct
 
+<a id="available-models-embedding-models"></a>
 ### 🧲 Embedding Models
 
 #### Nvidia Family
@@ -100,8 +166,10 @@ https://data-portal-dev.cels.anl.gov/resource_server/sophia/infinity/v1/embeddin
 > **📝 Want to add a model?** 
 > Add the HF-compatible, framework-supported model weights to `/eagle/argonne_tpc/model_weights/` and contact [Aditya Tanikanti](mailto:atanikanti@anl.gov?subject=Add%20new%20endpoint)
 
+<a id="inference-execution"></a>
 ## 🧩 Inference Execution
 
+<a id="inference-execution-performance-and-wait-times"></a>
 ### Performance and Wait Times
 
 When interacting with the inference endpoints, it's crucial to understand the system's operational characteristics:
@@ -124,6 +192,7 @@ When interacting with the inference endpoints, it's crucial to understand the sy
 > * The team is actively working on implementing a node reservation system to mitigate wait times and improve user experience.
 > * If you’re interested in extended model runtimes, reservations, or private model deployments, please get in touch with us.
 
+<a id="inference-execution-cluster-specific-details"></a>
 ### Cluster-Specific Details
 
 #### Sophia Cluster
@@ -132,8 +201,10 @@ The models are currently run as part of a **24-hour job** on Sophia. Here's how 
 - The first query by an authorized user dynamically acquires and activates the endpoints
 - Subsequent queries by authorized users will re-use the running job/endpoint
 
+<a id="prerequisites"></a>
 ## 🛠️ Prerequisites
 
+<a id="prerequisites-python-sdk-setup"></a>
 ### Python SDK Setup
 
 ```bash
@@ -148,6 +219,7 @@ pip install globus_sdk
 pip install openai
 ```
 
+<a id="prerequisites-authentication"></a>
 ### Authentication
 
 Download the script to manage access tokens:
@@ -176,8 +248,10 @@ If your current access token is expired, the above command will atomatically gen
 > * Endpoints are restricted. You must be on Argonne's network (Use VPN, Dash, or SSH to ANL machine).
 > * You will need to authenticate with Argonne or ALCF SSO (Single Sign On) using your credentials.
 
+<a id="usage-examples"></a>
 ## 💡 Usage Examples
 
+<a id="usage-examples-curl-request-examples"></a>
 ### 🌟 Curl Request Examples
 
 <details>
@@ -293,6 +367,7 @@ done
 ```
 </details>
 
+<a id="usage-examples-python-implementations"></a>
 ### 🐍 Python Implementations
 
 <details>
@@ -424,6 +499,7 @@ print(completion)
 ```
 </details>
 
+<a id="troubleshooting"></a>
 ## 🚨 Troubleshooting
 
 - **Connection Timeout?** 
@@ -431,6 +507,7 @@ print(completion)
   - Verify Argonne network access
   - Your job is queued as the cluster has too many pending jobs 
 
+<a id="contact-us"></a>
 ## 📞 Contact Us
 
 - 📧 [Benoit Cote](mailto:bcote@anl.gov?subject=Inference%20Endpoint)
