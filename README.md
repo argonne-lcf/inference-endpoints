@@ -21,7 +21,7 @@
 </details>
 
 <details>
-    <summary><a href=#available-models>Available Models</a></summary>
+    <summary><a href=#-available-models>Available Models</a></summary>
         &emsp;&ensp; <a href=#-chat-language-models>Chat Language Models</a><br>
         &emsp;&ensp; <a href=#deepseek-family>Deepseek Family</a><br>
         &emsp;&ensp; <a href=#allenai-family>Allenai Family</a><br>
@@ -30,33 +30,29 @@
 </details>
 
 <details>
-    <summary><a href=#inference-execution>Inference Execution</a></summary>
-        &emsp;&ensp; <a href=#></a>
-        inference-execution-performance-and-wait-times
-        inference-execution-cluster-specific-details
+    <summary><a href=#-inference-execution>Inference Execution</a></summary>
+        &emsp;&ensp; <a href=#performance-and-wait-times>Performance and Wait Times</a>
+        &emsp;&ensp; <a href=#cluster-specific-details>Cluster Specific Details</a>
 </details>
 
 <details>
-    <summary><a href=#prerequisites>Prerequisites</a></summary>
-        &emsp;&ensp; <a href=#></a>
-        prerequisites-python-sdk-setup
-        prerequisites-authentication
+    <summary><a href=#-prerequisites>Prerequisites</a></summary>
+        &emsp;&ensp; <a href=#python-sdk-setup>Python SDK Setup</a>
+        &emsp;&ensp; <a href=#authentication>Authentication</a>
 </details>
 
 <details>
-    <summary><a href=#usage-examples>Usage Examples</a></summary>
-        &emsp;&ensp; <a href=#></a>
-        usage-examples-curl-request-examples
+    <summary><a href=#-usage-examples>Usage Examples</a></summary>
+        &emsp;&ensp; <a href=#-curl-request-examples>Curl Request Examples</a>
+        &emsp;&ensp; <a href=#-python-implementations>Python Implementations</a>
 </details>
 
 <details>
     <summary><a href=#troubleshooting>Troubleshooting</a></summary>
-        &emsp;&ensp; <a href=#></a>
 </details>
 
 <details>
     <summary><a href=#contact-us>Contact Us</a></summary>
-        &emsp;&ensp; <a href=#></a>
 </details>
 
 
@@ -158,10 +154,8 @@ https://data-portal-dev.cels.anl.gov/resource_server/sophia/infinity/v1/embeddin
 > **📝 Want to add a model?** 
 > Add the HF-compatible, framework-supported model weights to `/eagle/argonne_tpc/model_weights/` and contact [Aditya Tanikanti](mailto:atanikanti@anl.gov?subject=Add%20new%20endpoint)
 
-<a id="inference-execution"></a>
 ## 🧩 Inference Execution
 
-<a id="inference-execution-performance-and-wait-times"></a>
 ### Performance and Wait Times
 
 When interacting with the inference endpoints, it's crucial to understand the system's operational characteristics:
@@ -184,7 +178,6 @@ When interacting with the inference endpoints, it's crucial to understand the sy
 > * The team is actively working on implementing a node reservation system to mitigate wait times and improve user experience.
 > * If you’re interested in extended model runtimes, reservations, or private model deployments, please get in touch with us.
 
-<a id="inference-execution-cluster-specific-details"></a>
 ### Cluster-Specific Details
 
 #### Sophia Cluster
@@ -193,10 +186,8 @@ The models are currently run as part of a **24-hour job** on Sophia. Here's how 
 - The first query by an authorized user dynamically acquires and activates the endpoints
 - Subsequent queries by authorized users will re-use the running job/endpoint
 
-<a id="prerequisites"></a>
 ## 🛠️ Prerequisites
 
-<a id="prerequisites-python-sdk-setup"></a>
 ### Python SDK Setup
 
 ```bash
@@ -211,7 +202,6 @@ pip install globus_sdk
 pip install openai
 ```
 
-<a id="prerequisites-authentication"></a>
 ### Authentication
 
 Download the script to manage access tokens:
@@ -240,10 +230,8 @@ If your current access token is expired, the above command will atomatically gen
 > * Endpoints are restricted. You must be on Argonne's network (Use VPN, Dash, or SSH to ANL machine).
 > * You will need to authenticate with Argonne or ALCF SSO (Single Sign On) using your credentials.
 
-<a id="usage-examples"></a>
 ## 💡 Usage Examples
 
-<a id="usage-examples-curl-request-examples"></a>
 ### 🌟 Curl Request Examples
 
 <details>
@@ -359,7 +347,6 @@ done
 ```
 </details>
 
-<a id="usage-examples-python-implementations"></a>
 ### 🐍 Python Implementations
 
 <details>
@@ -491,7 +478,6 @@ print(completion)
 ```
 </details>
 
-<a id="troubleshooting"></a>
 ## 🚨 Troubleshooting
 
 - **Connection Timeout?** 
@@ -499,7 +485,6 @@ print(completion)
   - Verify Argonne network access
   - Your job is queued as the cluster has too many pending jobs 
 
-<a id="contact-us"></a>
 ## 📞 Contact Us
 
 - 📧 [Benoit Cote](mailto:bcote@anl.gov?subject=Inference%20Endpoint)
