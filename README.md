@@ -5,54 +5,54 @@
 ### Table of Content
 
 <details>
-    <summary><a href=#🌐-overview>Overview</a></summary>
-        &emsp;&ensp; <a href=#🖥️-available-clusters>Available Clusters</a>
+    <summary><a href=#-overview>Overview</a></summary>
+        &emsp;&ensp; <a href=#-available-clusters>Available Clusters</a>
 </details>
 
 <details>
-    <summary><a href=#🧩-supported-frameworks>Supported Frameworks</a></summary>
+    <summary><a href=#-supported-frameworks>Supported Frameworks</a></summary>
 </details>
 
 <details>
-    <summary><a href=#🚀-api-endpoints>API Endpoints</a></summary>
+    <summary><a href=#-api-endpoints>API Endpoints</a></summary>
         &emsp;&ensp; <a href=#chat-completions>Chat Completions</a><br>
         &emsp;&ensp; <a href=#completions>Completions</a><br>
         &emsp;&ensp; <a href=#embeddings>Embeddings</a>
 </details>
 
 <details>
-    <summary><a href=#📚-available-models>Available Models</a></summary>
-        &emsp;&ensp; <a href=#💬-chat-language-models>Chat Language Models</a><br>
+    <summary><a href=#-available-models>Available Models</a></summary>
+        &emsp;&ensp; <a href=#-chat-language-models>Chat Language Models</a><br>
         &emsp;&ensp; <a href=#deepseek-family>Deepseek Family</a><br>
         &emsp;&ensp; <a href=#allenai-family>Allenai Family</a><br>
-        &emsp;&ensp; <a href=#👁️-vision-language-models>Vision Language Models</a><br>
-        &emsp;&ensp; <a href=#🧲-embedding-models>Embedding Models</a>
+        &emsp;&ensp; <a href=#-vision-language-models>Vision Language Models</a><br>
+        &emsp;&ensp; <a href=#-embedding-models>Embedding Models</a>
 </details>
 
 <details>
-    <summary><a href=#🧩-inference-execution>Inference Execution</a></summary>
+    <summary><a href=#-inference-execution>Inference Execution</a></summary>
         &emsp;&ensp; <a href=#performance-and-wait-times>Performance and Wait Times</a><br>
         &emsp;&ensp; <a href=#cluster-specific-details>Cluster Specific Details</a>
 </details>
 
 <details>
-    <summary><a href=#🛠️-prerequisites>Prerequisites</a></summary>
+    <summary><a href=#-prerequisites>Prerequisites</a></summary>
         &emsp;&ensp; <a href=#python-sdk-setup>Python SDK Setup</a><br>
         &emsp;&ensp; <a href=#authentication>Authentication</a>
 </details>
 
 <details>
-    <summary><a href=#💡-usage-examples>Usage Examples</a></summary>
-        &emsp;&ensp; <a href=#🌟-curl-request-examples>Curl Request Examples</a><br>
-        &emsp;&ensp; <a href=#🐍-python-implementations>Python Implementations</a>
+    <summary><a href=#-usage-examples>Usage Examples</a></summary>
+        &emsp;&ensp; <a href=#-curl-request-examples>Curl Request Examples</a><br>
+        &emsp;&ensp; <a href=#-python-implementations>Python Implementations</a>
 </details>
 
 <details>
-    <summary><a href=#🚨-troubleshooting>Troubleshooting</a></summary>
+    <summary><a href=#-troubleshooting>Troubleshooting</a></summary>
 </details>
 
 <details>
-    <summary><a href=#📞-contact-us>Contact Us</a></summary>
+    <summary><a href=#-contact-us>Contact Us</a></summary>
 </details>
 
 
