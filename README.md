@@ -6,7 +6,7 @@
 
 <details>
     <summary><a href=#-overview>Overview</a></summary>
-        &emsp;&ensp; <a href=#-available-clusters>Available Clusters</a>
+        &emsp;&ensp; <a href=#%EF%B8%8F-available-clusters>Available Clusters</a>
 </details>
 
 <details>
@@ -25,7 +25,7 @@
         &emsp;&ensp; <a href=#-chat-language-models>Chat Language Models</a><br>
         &emsp;&ensp; <a href=#deepseek-family>Deepseek Family</a><br>
         &emsp;&ensp; <a href=#allenai-family>Allenai Family</a><br>
-        &emsp;&ensp; <a href=#-vision-language-models>Vision Language Models</a><br>
+        &emsp;&ensp; <a href=#%EF%B8%8F-vision-language-models>Vision Language Models</a><br>
         &emsp;&ensp; <a href=#-embedding-models>Embedding Models</a>
 </details>
 
@@ -36,7 +36,7 @@
 </details>
 
 <details>
-    <summary><a href=#-prerequisites>Prerequisites</a></summary>
+    <summary><a href=#%EF%B8%8F-prerequisites>Prerequisites</a></summary>
         &emsp;&ensp; <a href=#python-sdk-setup>Python SDK Setup</a><br>
         &emsp;&ensp; <a href=#authentication>Authentication</a>
 </details>
