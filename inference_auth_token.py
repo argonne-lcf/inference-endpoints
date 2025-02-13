@@ -60,7 +60,7 @@ def get_auth_object(force=False):
 
 
 # Get access token
-def get_access_token():
+def get_access_token(force=False):
     """
     Load existing tokens, refresh the access token if necessary,
     and return the valid access token. If there is no token stored
@@ -69,7 +69,7 @@ def get_access_token():
     """
 
     # Get authorizer object and authenticate if need be
-    auth = get_auth_object()
+    auth = get_auth_object(force=force)
 
     # Make sure the stored access token if valid, and refresh otherwise
     auth.ensure_valid_token()
