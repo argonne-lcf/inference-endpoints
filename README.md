@@ -114,22 +114,22 @@ https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/batches
 ### 💬 Chat Language Models
 
 #### Qwen Family
-- Qwen/Qwen2.5-14B-Instruct
-- Qwen/Qwen2.5-7B-Instruct
-- Qwen/QwQ-32B-Preview
+- Qwen/Qwen2.5-14B-Instruct<sup>B</sup>
+- Qwen/Qwen2.5-7B-Instruct<sup>B</sup>
+- Qwen/QwQ-32B-Preview<sup>B</sup>
 
 #### Meta Llama Family
-- meta-llama/Meta-Llama-3-70B-Instruct
-- meta-llama/Meta-Llama-3-8B-Instruct
-- meta-llama/Meta-Llama-3.1-70B-Instruct
-- meta-llama/Meta-Llama-3.1-8B-Instruct
+- meta-llama/Meta-Llama-3-70B-Instruct<sup>B</sup>
+- meta-llama/Meta-Llama-3-8B-Instruct<sup>B</sup>
+- meta-llama/Meta-Llama-3.1-70B-Instruct<sup>B</sup>
+- meta-llama/Meta-Llama-3.1-8B-Instruct<sup>B</sup>
 - meta-llama/Meta-Llama-3.1-405B-Instruct
-- meta-llama/Llama-3.3-70B-Instruct
+- meta-llama/Llama-3.3-70B-Instruct<sup>B</sup>
 
 #### Mistral Family
-- mistralai/Mistral-7B-Instruct-v0.3
-- mistralai/Mistral-Large-Instruct-2407
-- mistralai/Mixtral-8x22B-Instruct-v0.1
+- mistralai/Mistral-7B-Instruct-v0.3<sup>B</sup>
+- mistralai/Mistral-Large-Instruct-2407<sup>B</sup>
+- mistralai/Mixtral-8x22B-Instruct-v0.1<sup>B</sup>
 
 #### Nvidia Nemotron Family
 - mgoin/Nemotron-4-340B-Instruct-hf
@@ -152,7 +152,7 @@ https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/batches
 ### 👁️ Vision Language Models
 
 #### Qwen Family
-- Qwen/Qwen2-VL-72B-Instruct (Ranked 1 in [vision leaderboard](https://huggingface.co/spaces/opencompass/open_vlm_leaderboard))
+- Qwen/Qwen2-VL-72B-Instruct<sup>B</sup> (Ranked 1 in [vision leaderboard](https://huggingface.co/spaces/opencompass/open_vlm_leaderboard))
 
 #### Meta Llama Family
 - meta-llama/Llama-3.2-90B-Vision-Instruct
@@ -186,8 +186,7 @@ When interacting with the inference endpoints, it's crucial to understand the sy
 3. **Job and model running status**
    - To view currently running jobs along with the models served on the cluster you can run `curl -X GET "https://data-portal-dev.cels.anl.gov/resource_server/sophia/jobs" -H "Authorization: Bearer ${access_token}"`. See [Authentication](#authentication) for `access_token`
      
-> **🚧 Future Improvements:** 
-> * The team is actively working on implementing a node reservation system to mitigate wait times and improve user experience.
+> ** Note ** 
 > * If you’re interested in extended model runtimes, reservations, or private model deployments, please get in touch with us.
 
 ### Cluster-Specific Details
@@ -493,8 +492,24 @@ print(completion)
 
 ## 🧩 Batch Completions
 
+The ALCF Inference Service provides batch processing capabilities for large-scale inference tasks. This service is exclusively available to ALCF users who have an allocation and access to our filesystem space. When a batch job is submitted:
+
+- A dedicated vLLM instance is launched specifically for processing your batch requests
+- The model serves only your requests from the input file (up to 150,000 requests per file per batch job)
+- The service runs for a maximum of 24 hours or until all requests are processed
+- Once completed, the model is automatically brought down to free resources
+- Results are written either to:
+  - Default directory: `/eagle/argonne_tpc/inference-service-batch-results/`
+  - Custom path: Specified via optional `output_file_path` in the request payload that is relative to the argonne_tpc project space or a world readable/writable folder
+
+> **📝 Important Notes:**
+> * Only models marked with <sup>B</sup> in the [Available Models section](#-available-models) support batch processing
+> * Currently only works for models with less than 70B parameters (models that fit on a single Sophia node)
+
+
+
 ### Input File Format
-Each line in the input file should contain a complete JSON request object. For example:
+Each line in the input file should contain a complete JSON request object in the format of the OpenAI API. For example:
 
 ```json
 {"custom_id": "request-1", "method": "POST", "url": "/v1/chat/completions", "body": {"model": "meta-llama/Meta-Llama-3.1-8B-Instruct", "messages": [{"role": "system", "content": "You are a helpful assistant."},{"role": "user", "content": "Hello world!"}],"max_tokens": 1000}}
@@ -504,8 +519,6 @@ Each line in the input file should contain a complete JSON request object. For e
 > **📝 Notes:**
 > * Input files must be available on the ALCF filesystem in the argonne_tpc project space or a world readable/writable folder
 > * Each request in the input file should be formatted as a JSON object on a single line (JSON Lines format)
-> * A maximum of 200,000 requests per batch will be processed
-> * Currently only works for models with less than 70B parameters (models that fit on a single Sophia node)
 
 ### Batch API Endpoints
 
