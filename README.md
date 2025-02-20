@@ -483,7 +483,8 @@ print(completion)
 
 - **Connection Timeout?** 
   - Verify Argonne network access
-  - Your job is queued as the cluster has too many pending jobs 
+  - The model you are requesting may be queued as the cluster has too many pending jobs
+    - Check model status by querying `https://data-portal-dev.cels.anl.gov/resource_server/sophia/jobs`
 
 - **Permission Denied from Internal Policies**
   - > Error: Permission denied from internal policies. This is likely due to a high-assurance timeout...
