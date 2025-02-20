@@ -92,8 +92,13 @@ https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/completions
 https://data-portal-dev.cels.anl.gov/resource_server/sophia/infinity/v1/embeddings
 ```
 
+### Batches
+```
+https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/batches
+```
+
 ### 
-> **📝 Note** 
+> **📝 Important Notes:** 
 > Currently embeddings are only supported by the infinity framework.
 > See [usage](#-usage-examples) and/or refer to [OpenAI API](https://platform.openai.com/docs/overview) docs for examples
 
@@ -478,6 +483,190 @@ completion = client.embeddings.create(
 print(completion)
 ```
 </details>
+
+## 🧩 Batch Completions
+> **📝 Notes:**
+> * A maximum of 200,000 requests per batch will be processed
+> * Currently only works for models with less than 70B parameters (models that fit on a single Sophia node)
+
+#### Input File Format
+Each line in the input file should contain a complete JSON request object. For example:
+
+```json
+{"custom_id": "request-1", "method": "POST", "url": "/v1/chat/completions", "body": {"model": "meta-llama/Meta-Llama-3.1-8B-Instruct", "messages": [{"role": "system", "content": "You are a helpful assistant."},{"role": "user", "content": "Hello world!"}],"max_tokens": 1000}}
+{"custom_id": "request-2", "method": "POST", "url": "/v1/chat/completions", "body": {"model": "meta-llama/Meta-Llama-3.1-8B-Instruct", "messages": [{"role": "system", "content": "You are an unhelpful assistant."},{"role": "user", "content": "Hello world!"}],"max_tokens": 1000}}
+```
+
+> **📝 Notes:**
+> * Input files must be available on the ALCF filesystem in the argonne_tpc project space or a world readable/writable folder
+> * Each request in the input file should be formatted as a JSON object on a single line (JSON Lines format)
+
+#### Batch API Endpoints
+
+<details>
+<summary>Submit Batch Request</summary>
+
+```bash
+#!/bin/bash
+
+# Get your access token
+access_token=$(python inference_auth_token.py get_access_token)
+
+# Define the base URL
+base_url="https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/batches"
+
+# Submit batch request
+curl -X POST "$base_url" \
+     -H "Authorization: Bearer ${access_token}" \
+     -H "Content-Type: application/json" \
+     -d '{
+          "model": "meta-llama/Meta-Llama-3.1-8B-Instruct",
+          "input_file": "/eagle/path/to/your/input.jsonl"
+        }'
+```
+
+Using Python:
+```python
+import requests
+import json
+from inference_auth_token import get_access_token
+
+# Get your access token
+access_token = get_access_token()
+
+# Define headers and URL
+headers = {
+    'Authorization': f'Bearer {access_token}',
+    'Content-Type': 'application/json'
+}
+url = "https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/batches"
+
+# Submit batch request
+data = {
+    "model": "meta-llama/Meta-Llama-3.1-8B-Instruct",
+    "input_file": "/eagle/path/to/your/input.jsonl"
+}
+
+response = requests.post(url, headers=headers, json=data)
+print(response.json())
+```
+</details>
+
+<details>
+<summary>List All Batches</summary>
+
+```bash
+#!/bin/bash
+
+# Get your access token
+access_token=$(python inference_auth_token.py get_access_token)
+
+# List all batches
+curl -X GET "https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/batches" \
+     -H "Authorization: Bearer ${access_token}"
+
+# Optionally filter by status
+curl -X GET "https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/batches?status=completed" \
+     -H "Authorization: Bearer ${access_token}"
+```
+
+Using Python:
+```python
+import requests
+from inference_auth_token import get_access_token
+
+# Get your access token
+access_token = get_access_token()
+
+# Define headers and URL
+headers = {
+    'Authorization': f'Bearer {access_token}'
+}
+url = "https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/batches"
+
+# List all batches
+response = requests.get(url, headers=headers)
+print(response.json())
+
+# Optionally filter by status
+params = {'status': 'completed'}
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+</details>
+
+<details>
+<summary>Get Batch Status</summary>
+
+```bash
+#!/bin/bash
+
+# Get your access token
+access_token=$(python inference_auth_token.py get_access_token)
+
+# Get status of specific batch
+batch_id="your-batch-id"
+curl -X GET "https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/batches/${batch_id}" \
+     -H "Authorization: Bearer ${access_token}"
+```
+
+Using Python:
+```python
+import requests
+from inference_auth_token import get_access_token
+
+# Get your access token
+access_token = get_access_token()
+
+# Define headers and URL
+headers = {
+    'Authorization': f'Bearer {access_token}'
+}
+batch_id = "your-batch-id"
+url = f"https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/batches/{batch_id}"
+
+# Get batch status
+response = requests.get(url, headers=headers)
+print(response.json())
+```
+</details>
+
+<details>
+<summary>Get Batch Results</summary>
+
+```bash
+#!/bin/bash
+
+# Get your access token
+access_token=$(python inference_auth_token.py get_access_token)
+
+# Get results of specific batch
+batch_id="your-batch-id"
+curl -X GET "https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/batches/${batch_id}/result" \
+     -H "Authorization: Bearer ${access_token}"
+```
+
+Using Python:
+```python
+import requests
+from inference_auth_token import get_access_token
+
+# Get your access token
+access_token = get_access_token()
+
+# Define headers and URL
+headers = {
+    'Authorization': f'Bearer {access_token}'
+}
+batch_id = "your-batch-id"
+url = f"https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/batches/{batch_id}/result"
+
+# Get batch results
+response = requests.get(url, headers=headers)
+print(response.json())
+```
+</details>
+
 
 ## 🚨 Troubleshooting
 
