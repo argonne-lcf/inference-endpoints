@@ -482,9 +482,13 @@ print(completion)
 ## 🚨 Troubleshooting
 
 - **Connection Timeout?** 
-  - Regenerate your access token
   - Verify Argonne network access
   - Your job is queued as the cluster has too many pending jobs 
+
+- **Permission Denied from Internal Policies**
+  - > Error: Permission denied from internal policies. This is likely due to a high-assurance timeout...
+  - Logout from your account by visiting [https://app.globus.org/logout](https://app.globus.org/logout)
+  - Regenerate your access token with `python inference_auth_token.py authenticate --force`
 
 ## 📞 Contact Us
 
