@@ -48,6 +48,13 @@
 </details>
 
 <details>
+    <summary><a href=#-batch-completions>Batch Completions</a></summary>
+        &emsp;&ensp; <a href=#-submit-batch-request>Submit Batch Request</a><br>
+        &emsp;&ensp; <a href=#-list-all-batches>List All Batches</a><br>
+        &emsp;&ensp; <a href=#-get-batch-status>Get Batch Status</a>
+</details>
+
+<details>
     <summary><a href=#-troubleshooting>Troubleshooting</a></summary>
 </details>
 
@@ -485,11 +492,8 @@ print(completion)
 </details>
 
 ## 🧩 Batch Completions
-> **📝 Notes:**
-> * A maximum of 200,000 requests per batch will be processed
-> * Currently only works for models with less than 70B parameters (models that fit on a single Sophia node)
 
-#### Input File Format
+### Input File Format
 Each line in the input file should contain a complete JSON request object. For example:
 
 ```json
@@ -500,8 +504,10 @@ Each line in the input file should contain a complete JSON request object. For e
 > **📝 Notes:**
 > * Input files must be available on the ALCF filesystem in the argonne_tpc project space or a world readable/writable folder
 > * Each request in the input file should be formatted as a JSON object on a single line (JSON Lines format)
+> * A maximum of 200,000 requests per batch will be processed
+> * Currently only works for models with less than 70B parameters (models that fit on a single Sophia node)
 
-#### Batch API Endpoints
+### Batch API Endpoints
 
 <details>
 <summary>Submit Batch Request</summary>
