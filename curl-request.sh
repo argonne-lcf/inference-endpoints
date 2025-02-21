@@ -1,5 +1,5 @@
 #!/bin/bash
-access_token=$(cat access_token.txt)
+access_token=$(python inference_auth_token.py get_access_token)
 curl -X POST "https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/chat/completions" \
      -H "Authorization: Bearer ${access_token}" \
      -H "Content-Type: application/json" \
