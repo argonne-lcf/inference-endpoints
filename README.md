@@ -743,7 +743,13 @@ Batch Status Codes:
 </details>
 
 #### Cancel Batch
+
+<details>
+<summary>Cancel Submitted Batch</summary>
+
 The inference team is currently developing a mechanism for users to cancel submitted batches. In the meantime, please contact us with your `batch_id` if you have a batch to cancel.
+
+</details>
 
 ## 🚨 Troubleshooting
 
