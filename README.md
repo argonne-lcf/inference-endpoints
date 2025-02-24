@@ -48,6 +48,14 @@
 </details>
 
 <details>
+    <summary><a href=#-batch>Batch</a></summary>
+        &emsp;&ensp; <a href=#create-batch>Create Batch</a><br>
+        &emsp;&ensp; <a href=#retrieve-batch>Retrieve Batch</a><br>
+        &emsp;&ensp; <a href=#list-batch>List Batch</a><br>
+        &emsp;&ensp; <a href=#batch-status>Batch Status</a>
+</details>
+
+<details>
     <summary><a href=#-troubleshooting>Troubleshooting</a></summary>
 </details>
 
@@ -92,8 +100,13 @@ https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/completions
 https://data-portal-dev.cels.anl.gov/resource_server/sophia/infinity/v1/embeddings
 ```
 
+### Batches
+```
+https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/batches
+```
+
 ### 
-> **📝 Note** 
+> **📝 Important Notes:** 
 > Currently embeddings are only supported by the infinity framework.
 > See [usage](#-usage-examples) and/or refer to [OpenAI API](https://platform.openai.com/docs/overview) docs for examples
 
@@ -102,22 +115,22 @@ https://data-portal-dev.cels.anl.gov/resource_server/sophia/infinity/v1/embeddin
 ### 💬 Chat Language Models
 
 #### Qwen Family
-- Qwen/Qwen2.5-14B-Instruct
-- Qwen/Qwen2.5-7B-Instruct
-- Qwen/QwQ-32B-Preview
+- Qwen/Qwen2.5-14B-Instruct<sup>B</sup>
+- Qwen/Qwen2.5-7B-Instruct<sup>B</sup>
+- Qwen/QwQ-32B-Preview<sup>B</sup>
 
 #### Meta Llama Family
-- meta-llama/Meta-Llama-3-70B-Instruct
-- meta-llama/Meta-Llama-3-8B-Instruct
-- meta-llama/Meta-Llama-3.1-70B-Instruct
-- meta-llama/Meta-Llama-3.1-8B-Instruct
+- meta-llama/Meta-Llama-3-70B-Instruct<sup>B</sup>
+- meta-llama/Meta-Llama-3-8B-Instruct<sup>B</sup>
+- meta-llama/Meta-Llama-3.1-70B-Instruct<sup>B</sup>
+- meta-llama/Meta-Llama-3.1-8B-Instruct<sup>B</sup>
 - meta-llama/Meta-Llama-3.1-405B-Instruct
-- meta-llama/Llama-3.3-70B-Instruct
+- meta-llama/Llama-3.3-70B-Instruct<sup>B</sup>
 
 #### Mistral Family
-- mistralai/Mistral-7B-Instruct-v0.3
-- mistralai/Mistral-Large-Instruct-2407
-- mistralai/Mixtral-8x22B-Instruct-v0.1
+- mistralai/Mistral-7B-Instruct-v0.3<sup>B</sup>
+- mistralai/Mistral-Large-Instruct-2407<sup>B</sup>
+- mistralai/Mixtral-8x22B-Instruct-v0.1<sup>B</sup>
 
 #### Nvidia Nemotron Family
 - mgoin/Nemotron-4-340B-Instruct-hf
@@ -140,7 +153,7 @@ https://data-portal-dev.cels.anl.gov/resource_server/sophia/infinity/v1/embeddin
 ### 👁️ Vision Language Models
 
 #### Qwen Family
-- Qwen/Qwen2-VL-72B-Instruct (Ranked 1 in [vision leaderboard](https://huggingface.co/spaces/opencompass/open_vlm_leaderboard))
+- Qwen/Qwen2-VL-72B-Instruct<sup>B</sup> (Ranked 1 in [vision leaderboard](https://huggingface.co/spaces/opencompass/open_vlm_leaderboard))
 
 #### Meta Llama Family
 - meta-llama/Llama-3.2-90B-Vision-Instruct
@@ -174,8 +187,7 @@ When interacting with the inference endpoints, it's crucial to understand the sy
 3. **Job and model running status**
    - To view currently running jobs along with the models served on the cluster you can run `curl -X GET "https://data-portal-dev.cels.anl.gov/resource_server/sophia/jobs" -H "Authorization: Bearer ${access_token}"`. See [Authentication](#authentication) for `access_token`
      
-> **🚧 Future Improvements:** 
-> * The team is actively working on implementing a node reservation system to mitigate wait times and improve user experience.
+> ** Note ** 
 > * If you’re interested in extended model runtimes, reservations, or private model deployments, please get in touch with us.
 
 ### Cluster-Specific Details
@@ -477,6 +489,256 @@ completion = client.embeddings.create(
 # Print the model's analysis
 print(completion)
 ```
+</details>
+
+## 🧩 Batch
+
+The ALCF Inference Service provides batch processing capabilities for large-scale inference tasks. This service is exclusively available to ALCF users with an allocation and access to our filesystem space. When a batch job is submitted:
+
+- A dedicated vLLM instance is launched specifically for processing your batch requests
+- The model serves only your requests from the input file (up to 150,000 requests per file per batch job)
+- The service runs for a maximum of 24 hours or until all requests are processed
+- Once completed, the model is automatically brought down to free resources
+- Results are written either to:
+  - Default directory: `/eagle/argonne_tpc/inference-service-batch-results/`
+  - Custom path: Specified via optional `output_file_path` in the request payload that is relative to the argonne_tpc project space or a world readable/writable folder
+
+### Concurrent Job Limit:
+Currently, the service accommodates only two concurrent batch jobs. Any additional jobs are queued on Globus, and the batch status will accurately reflect the current state of each job.
+
+
+> **📝 Important Notes:**
+> * Only models marked with <sup>B</sup> in the [Available Models section](#-available-models) support batch processing
+> * Currently only works for models with less than 70B parameters (models that fit on a single Sophia node)
+
+
+
+### Input File Format
+Each line in the input file should contain a complete JSON request object in the format of the OpenAI API. For example:
+
+```json
+{"custom_id": "request-1", "method": "POST", "url": "/v1/chat/completions", "body": {"model": "meta-llama/Meta-Llama-3.1-8B-Instruct", "messages": [{"role": "system", "content": "You are a helpful assistant."},{"role": "user", "content": "Hello world!"}],"max_tokens": 1000}}
+{"custom_id": "request-2", "method": "POST", "url": "/v1/chat/completions", "body": {"model": "meta-llama/Meta-Llama-3.1-8B-Instruct", "messages": [{"role": "system", "content": "You are an unhelpful assistant."},{"role": "user", "content": "Hello world!"}],"max_tokens": 1000}}
+```
+
+> **📝 Notes:**
+> * Input files must be available on the ALCF filesystem in the argonne_tpc project space or a world readable/writable folder
+> * Each request in the input file should be formatted as a JSON object on a single line (JSON Lines format)
+
+### Batch API Endpoints
+
+#### Create Batch
+
+<details>
+<summary>Create Batch Request</summary>
+
+```bash
+#!/bin/bash
+
+# Get your access token
+access_token=$(python inference_auth_token.py get_access_token)
+
+# Define the base URL
+base_url="https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/batches"
+
+# Submit batch request
+curl -X POST "$base_url" \
+     -H "Authorization: Bearer ${access_token}" \
+     -H "Content-Type: application/json" \
+     -d '{
+          "model": "meta-llama/Meta-Llama-3.1-8B-Instruct",
+          "input_file": "/eagle/path/to/your/input.jsonl"
+        }'
+```
+
+Using Python:
+```python
+import requests
+import json
+from inference_auth_token import get_access_token
+
+# Get your access token
+access_token = get_access_token()
+
+# Define headers and URL
+headers = {
+    'Authorization': f'Bearer {access_token}',
+    'Content-Type': 'application/json'
+}
+url = "https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/batches"
+
+# Submit batch request
+data = {
+    "model": "meta-llama/Meta-Llama-3.1-8B-Instruct",
+    "input_file": "/eagle/path/to/your/input.jsonl"
+}
+
+response = requests.post(url, headers=headers, json=data)
+print(response.json())
+```
+</details>
+
+#### Retrieve Batch
+
+<details>
+<summary>Retrieve Batch Results</summary>
+
+```bash
+#!/bin/bash
+
+# Get your access token
+access_token=$(python inference_auth_token.py get_access_token)
+
+# Get results of specific batch
+batch_id="your-batch-id"
+curl -X GET "https://data-portal-dev.cels.anl.gov/resource_server/v1/batches/${batch_id}/result" \
+     -H "Authorization: Bearer ${access_token}"
+```
+
+Using Python:
+```python
+import requests
+from inference_auth_token import get_access_token
+
+# Get your access token
+access_token = get_access_token()
+
+# Define headers and URL
+headers = {
+    'Authorization': f'Bearer {access_token}'
+}
+batch_id = "your-batch-id"
+url = f"https://data-portal-dev.cels.anl.gov/resource_server/v1/batches/{batch_id}/result"
+
+# Get batch results
+response = requests.get(url, headers=headers)
+print(response.json())
+```
+
+Sample output:
+```bash
+{
+    "results_file": "/eagle/argonne_tpc/cucinell/Data/prompts_massgen/inference_results/student_teacher_1.5M_llama3.3_70b/chunk_aj_Llama-3.3-70B-Instruct_03533097-65c5-4ea8-9a00-2dbd1e152eb4/chunk_aj_20250220_010018.results.jsonl",
+    "progress_file": "/eagle/argonne_tpc/cucinell/Data/prompts_massgen/inference_results/student_teacher_1.5M_llama3.3_70b/chunk_aj_Llama-3.3-70B-Instruct_03533097-65c5-4ea8-9a00-2dbd1e152eb4/chunk_aj_20250220_010018.progress.json",
+    "metrics": {
+        "response_time": 27837.440138816833,
+        "throughput_tokens_per_second": 3899.833442250346,
+        "total_tokens": 108561380,
+        "num_responses": 99985,
+        "lines_processed": 100000
+    }
+} 
+```
+</details>
+
+#### List Batch
+
+<details>
+<summary>List All Batches</summary>
+
+```bash
+#!/bin/bash
+
+# Get your access token
+access_token=$(python inference_auth_token.py get_access_token)
+
+# List all batches
+curl -X GET "https://data-portal-dev.cels.anl.gov/resource_server/v1/batches" \
+     -H "Authorization: Bearer ${access_token}"
+
+# Optionally filter by status
+curl -X GET "https://data-portal-dev.cels.anl.gov/resource_server/v1/batches?status=completed" \
+     -H "Authorization: Bearer ${access_token}"
+```
+
+Using Python:
+```python
+import requests
+from inference_auth_token import get_access_token
+
+# Get your access token
+access_token = get_access_token()
+
+# Define headers and URL
+headers = {
+    'Authorization': f'Bearer {access_token}'
+}
+url = "https://data-portal-dev.cels.anl.gov/resource_server/v1/batches"
+
+# List all batches
+response = requests.get(url, headers=headers)
+print(response.json())
+
+# Optionally filter by status
+params = {'status': 'completed'}
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+Sample Output:
+```bash
+[
+  {
+    "batch_id": "f8fa8efd-37c1-476d-a0a7-677787eff743",
+    "cluster": "sophia",
+    "created_at": "2025-02-20 18:39:58.049584+00:00",
+    "framework": "vllm",
+    "input_file": "/eagle/argonne_tpc/cucinell/Data/prompts_massgen/inference_results/student_teacher_1.5M_llama3.3_70b/chunk_ak.jsonl",
+    "status": "pending"
+  },
+  {
+    "batch_id": "4b8a31b8-b0b3-479f-8caf-5b788d46e369",
+    "cluster": "sophia",
+    "created_at": "2025-02-20 18:40:30.882414+00:00",
+    "framework": "vllm",
+    "input_file": "/eagle/argonne_tpc/cucinell/Data/prompts_massgen/inference_results/student_teacher_1.5M_llama3.3_70b/chunk_al.jsonl",
+    "status": "pending"
+  }
+]
+```
+
+</details>
+
+#### Batch Status
+
+<details>
+<summary>Get Batch Status</summary>
+
+```bash
+#!/bin/bash
+
+# Get your access token
+access_token=$(python inference_auth_token.py get_access_token)
+
+# Get status of specific batch
+batch_id="your-batch-id"
+curl -X GET "https://data-portal-dev.cels.anl.gov/resource_server/v1/batches/${batch_id}" \
+     -H "Authorization: Bearer ${access_token}"
+```
+
+Using Python:
+```python
+import requests
+from inference_auth_token import get_access_token
+
+# Get your access token
+access_token = get_access_token()
+
+# Define headers and URL
+headers = {
+    'Authorization': f'Bearer {access_token}'
+}
+batch_id = "your-batch-id"
+url = f"https://data-portal-dev.cels.anl.gov/resource_server/v1/batches/{batch_id}"
+
+# Get batch status
+response = requests.get(url, headers=headers)
+print(response.json())
+```
+Batch Status Codes:
+- **pending**: The request was submitted, but the job has not started yet.
+- **running**: The job is currently running on a compute node.
+- **failed**: An error occurred; the error message will be displayed when querying the result.
+- **completed**: :tada:
 </details>
 
 ## 🚨 Troubleshooting
