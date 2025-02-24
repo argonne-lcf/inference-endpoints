@@ -48,10 +48,11 @@
 </details>
 
 <details>
-    <summary><a href=#-batch-completions>Batch Completions</a></summary>
-        &emsp;&ensp; <a href=#-submit-batch-request>Submit Batch Request</a><br>
-        &emsp;&ensp; <a href=#-list-all-batches>List All Batches</a><br>
-        &emsp;&ensp; <a href=#-get-batch-status>Get Batch Status</a>
+    <summary><a href=#-batch>Batch</a></summary>
+        &emsp;&ensp; <a href=#create-batch>Create Batch</a><br>
+        &emsp;&ensp; <a href=#retrieve-batch>Retrieve Batch</a><br>
+        &emsp;&ensp; <a href=#list-batch>List Batch</a><br>
+        &emsp;&ensp; <a href=#batch-status>Batch Status</a>
 </details>
 
 <details>
@@ -490,9 +491,9 @@ print(completion)
 ```
 </details>
 
-## 🧩 Batch Completions
+## 🧩 Batch
 
-The ALCF Inference Service provides batch processing capabilities for large-scale inference tasks. This service is exclusively available to ALCF users who have an allocation and access to our filesystem space. When a batch job is submitted:
+The ALCF Inference Service provides batch processing capabilities for large-scale inference tasks. This service is exclusively available to ALCF users with an allocation and access to our filesystem space. When a batch job is submitted:
 
 - A dedicated vLLM instance is launched specifically for processing your batch requests
 - The model serves only your requests from the input file (up to 150,000 requests per file per batch job)
@@ -501,6 +502,10 @@ The ALCF Inference Service provides batch processing capabilities for large-scal
 - Results are written either to:
   - Default directory: `/eagle/argonne_tpc/inference-service-batch-results/`
   - Custom path: Specified via optional `output_file_path` in the request payload that is relative to the argonne_tpc project space or a world readable/writable folder
+
+### Concurrent Job Limit:
+Currently, the service accommodates only two concurrent batch jobs. Any additional jobs are queued on Globus, and the batch status will accurately reflect the current state of each job.
+
 
 > **📝 Important Notes:**
 > * Only models marked with <sup>B</sup> in the [Available Models section](#-available-models) support batch processing
@@ -522,8 +527,10 @@ Each line in the input file should contain a complete JSON request object in the
 
 ### Batch API Endpoints
 
+#### Create Batch
+
 <details>
-<summary>Submit Batch Request</summary>
+<summary>Create Batch Request</summary>
 
 ```bash
 #!/bin/bash
@@ -571,8 +578,10 @@ print(response.json())
 ```
 </details>
 
+#### Retrieve Batch
+
 <details>
-<summary>List All Batches</summary>
+<summary>Retrieve Batch Results</summary>
 
 ```bash
 #!/bin/bash
@@ -580,12 +589,9 @@ print(response.json())
 # Get your access token
 access_token=$(python inference_auth_token.py get_access_token)
 
-# List all batches
-curl -X GET "https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/batches" \
-     -H "Authorization: Bearer ${access_token}"
-
-# Optionally filter by status
-curl -X GET "https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/batches?status=completed" \
+# Get results of specific batch
+batch_id="your-batch-id"
+curl -X GET "https://data-portal-dev.cels.anl.gov/resource_server/v1/batches/${batch_id}/result" \
      -H "Authorization: Bearer ${access_token}"
 ```
 
@@ -601,7 +607,63 @@ access_token = get_access_token()
 headers = {
     'Authorization': f'Bearer {access_token}'
 }
-url = "https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/batches"
+batch_id = "your-batch-id"
+url = f"https://data-portal-dev.cels.anl.gov/resource_server/v1/batches/{batch_id}/result"
+
+# Get batch results
+response = requests.get(url, headers=headers)
+print(response.json())
+```
+
+Sample output:
+```bash
+{
+    "results_file": "/eagle/argonne_tpc/cucinell/Data/prompts_massgen/inference_results/student_teacher_1.5M_llama3.3_70b/chunk_aj_Llama-3.3-70B-Instruct_03533097-65c5-4ea8-9a00-2dbd1e152eb4/chunk_aj_20250220_010018.results.jsonl",
+    "progress_file": "/eagle/argonne_tpc/cucinell/Data/prompts_massgen/inference_results/student_teacher_1.5M_llama3.3_70b/chunk_aj_Llama-3.3-70B-Instruct_03533097-65c5-4ea8-9a00-2dbd1e152eb4/chunk_aj_20250220_010018.progress.json",
+    "metrics": {
+        "response_time": 27837.440138816833,
+        "throughput_tokens_per_second": 3899.833442250346,
+        "total_tokens": 108561380,
+        "num_responses": 99985,
+        "lines_processed": 100000
+    }
+} 
+</details>
+```
+
+#### List Batch
+
+<details>
+<summary>List All Batches</summary>
+
+```bash
+#!/bin/bash
+
+# Get your access token
+access_token=$(python inference_auth_token.py get_access_token)
+
+# List all batches
+curl -X GET "https://data-portal-dev.cels.anl.gov/resource_server/v1/batches" \
+     -H "Authorization: Bearer ${access_token}"
+
+# Optionally filter by status
+curl -X GET "https://data-portal-dev.cels.anl.gov/resource_server/v1/batches?status=completed" \
+     -H "Authorization: Bearer ${access_token}"
+```
+
+Using Python:
+```python
+import requests
+from inference_auth_token import get_access_token
+
+# Get your access token
+access_token = get_access_token()
+
+# Define headers and URL
+headers = {
+    'Authorization': f'Bearer {access_token}'
+}
+url = "https://data-portal-dev.cels.anl.gov/resource_server/v1/batches"
 
 # List all batches
 response = requests.get(url, headers=headers)
@@ -612,7 +674,31 @@ params = {'status': 'completed'}
 response = requests.get(url, headers=headers, params=params)
 print(response.json())
 ```
+Sample Output:
+```bash
+[
+  {
+    "batch_id": "f8fa8efd-37c1-476d-a0a7-677787eff743",
+    "cluster": "sophia",
+    "created_at": "2025-02-20 18:39:58.049584+00:00",
+    "framework": "vllm",
+    "input_file": "/eagle/argonne_tpc/cucinell/Data/prompts_massgen/inference_results/student_teacher_1.5M_llama3.3_70b/chunk_ak.jsonl",
+    "status": "pending"
+  },
+  {
+    "batch_id": "4b8a31b8-b0b3-479f-8caf-5b788d46e369",
+    "cluster": "sophia",
+    "created_at": "2025-02-20 18:40:30.882414+00:00",
+    "framework": "vllm",
+    "input_file": "/eagle/argonne_tpc/cucinell/Data/prompts_massgen/inference_results/student_teacher_1.5M_llama3.3_70b/chunk_al.jsonl",
+    "status": "pending"
+  }
+]
+```
+
 </details>
+
+#### Batch Status
 
 <details>
 <summary>Get Batch Status</summary>
@@ -625,7 +711,7 @@ access_token=$(python inference_auth_token.py get_access_token)
 
 # Get status of specific batch
 batch_id="your-batch-id"
-curl -X GET "https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/batches/${batch_id}" \
+curl -X GET "https://data-portal-dev.cels.anl.gov/resource_server/v1/batches/${batch_id}" \
      -H "Authorization: Bearer ${access_token}"
 ```
 
@@ -642,50 +728,18 @@ headers = {
     'Authorization': f'Bearer {access_token}'
 }
 batch_id = "your-batch-id"
-url = f"https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/batches/{batch_id}"
+url = f"https://data-portal-dev.cels.anl.gov/resource_server/v1/batches/{batch_id}"
 
 # Get batch status
 response = requests.get(url, headers=headers)
 print(response.json())
 ```
+Batch Status Codes:
+- **pending**: The request was submitted, but the job has not started yet.
+- **running**: The job is currently running on a compute node.
+- **failed**: An error occurred; the error message will be displayed when querying the result.
+- **completed**: :tada:
 </details>
-
-<details>
-<summary>Get Batch Results</summary>
-
-```bash
-#!/bin/bash
-
-# Get your access token
-access_token=$(python inference_auth_token.py get_access_token)
-
-# Get results of specific batch
-batch_id="your-batch-id"
-curl -X GET "https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/batches/${batch_id}/result" \
-     -H "Authorization: Bearer ${access_token}"
-```
-
-Using Python:
-```python
-import requests
-from inference_auth_token import get_access_token
-
-# Get your access token
-access_token = get_access_token()
-
-# Define headers and URL
-headers = {
-    'Authorization': f'Bearer {access_token}'
-}
-batch_id = "your-batch-id"
-url = f"https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/batches/{batch_id}/result"
-
-# Get batch results
-response = requests.get(url, headers=headers)
-print(response.json())
-```
-</details>
-
 
 ## 🚨 Troubleshooting
 
