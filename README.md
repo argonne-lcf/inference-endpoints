@@ -628,8 +628,8 @@ Sample output:
         "lines_processed": 100000
     }
 } 
-</details>
 ```
+</details>
 
 #### List Batch
 
