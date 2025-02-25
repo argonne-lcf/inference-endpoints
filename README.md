@@ -187,7 +187,7 @@ When interacting with the inference endpoints, it's crucial to understand the sy
 3. **Job and model running status**
    - To view currently running jobs along with the models served on the cluster you can run `curl -X GET "https://data-portal-dev.cels.anl.gov/resource_server/sophia/jobs" -H "Authorization: Bearer ${access_token}"`. See [Authentication](#authentication) for `access_token`
      
-> > **📝 Note:** 
+> **📝 Note:** 
 > * If you’re interested in extended model runtimes, reservations, or private model deployments, please get in touch with us.
 
 ### Cluster-Specific Details
