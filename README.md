@@ -52,7 +52,8 @@
         &emsp;&ensp; <a href=#create-batch>Create Batch</a><br>
         &emsp;&ensp; <a href=#retrieve-batch>Retrieve Batch</a><br>
         &emsp;&ensp; <a href=#list-batch>List Batch</a><br>
-        &emsp;&ensp; <a href=#batch-status>Batch Status</a>
+        &emsp;&ensp; <a href=#batch-status>Batch Status</a><br>
+        &emsp;&ensp; <a href=#cancel-batch>Cancel Batch</a>
 </details>
 
 <details>
@@ -752,6 +753,15 @@ Batch Status Codes:
 - **running**: The job is currently running on a compute node.
 - **failed**: An error occurred; the error message will be displayed when querying the result.
 - **completed**: :tada:
+</details>
+
+#### Cancel Batch
+
+<details>
+<summary>Cancel Submitted Batch</summary>
+
+The inference team is currently developing a mechanism for users to cancel submitted batches. In the meantime, please contact us with your `batch_id` if you have a batch to cancel.
+
 </details>
 
 ## 🚨 Troubleshooting
