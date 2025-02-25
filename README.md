@@ -501,7 +501,7 @@ The ALCF Inference Service provides batch processing capabilities for large-scal
 - Once completed, the model is automatically brought down to free resources
 - Results are written either to:
   - Default directory: `/eagle/argonne_tpc/inference-service-batch-results/`.
-  - Custom directory: Specified via optional `output_folder_path` in the request payload (e.g., `/eagle/argonne_tpc/my_username/my_batches/`). 
+  - Custom directory: Specified via optional `output_folder_path` in the request payload (e.g., `/eagle/argonne_tpc/path/to/your/output/folder/`). 
 
 > **📝 Important Note:**
 > * Input file and output folder (if provided) **must be located within the `argonne_tcp` project** space or within a world readable/writable folder. Otherwise, the ALCF inference service will not have the permission to process your batch request.
