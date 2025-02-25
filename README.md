@@ -501,7 +501,7 @@ The ALCF Inference Service provides batch processing capabilities for large-scal
 - Once completed, the model is automatically brought down to free resources
 - Results are written either to:
   - Default directory: `/eagle/argonne_tpc/inference-service-batch-results/`
-  - Custom path: Specified via optional `output_file_path` in the request payload that is relative to the argonne_tpc project space or a world readable/writable folder
+  - Custom path: Specified via optional `output_folder_path` in the request payload. The path must either point to a folder within the argonne_tpc project space (e.g., `/eagle/argonne_tpc/my_username/my_batches/`), or to a world readable/writable folder.
 
 ### Concurrent Job Limit:
 Currently, the service accommodates only two concurrent batch jobs. Any additional jobs are queued on Globus, and the batch status will accurately reflect the current state of each job.
