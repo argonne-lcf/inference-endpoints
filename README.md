@@ -187,7 +187,7 @@ When interacting with the inference endpoints, it's crucial to understand the sy
 3. **Job and model running status**
    - To view currently running jobs along with the models served on the cluster you can run `curl -X GET "https://data-portal-dev.cels.anl.gov/resource_server/sophia/jobs" -H "Authorization: Bearer ${access_token}"`. See [Authentication](#authentication) for `access_token`
      
-> ** Note ** 
+> > **📝 Note:** 
 > * If you’re interested in extended model runtimes, reservations, or private model deployments, please get in touch with us.
 
 ### Cluster-Specific Details
@@ -503,13 +503,15 @@ The ALCF Inference Service provides batch processing capabilities for large-scal
   - Default directory: `/eagle/argonne_tpc/inference-service-batch-results/`.
   - Custom directory: Specified via optional `output_folder_path` in the request payload (e.g., `/eagle/argonne_tpc/my_username/my_batches/`). 
 
-> **📝 Important Note:** Input file and output folder (if provided) **must be located within the `argonne_tcp` project** space or within a world readable/writable folder. Otherwise, the ALCF inference service will not have the permission to process your batch request.
+> **📝 Important Note:**
+> * Input file and output folder (if provided) **must be located within the `argonne_tcp` project** space or within a world readable/writable folder. Otherwise, the ALCF inference service will not have the permission to process your batch request.
 
 ### Concurrent Job Limit:
 Currently, the service accommodates only two concurrent batch jobs. Any additional jobs are queued on Globus, and the batch status will accurately reflect the current state of each job.
 
 
-> **📝 Important Note:** Only models marked with <sup>B</sup> in the [Available Models section](#-available-models) support batch processing. Those are models with less than 70B parameters (models that fit on a single Sophia node)
+> **📝 Important Note:**
+> * Only models marked with <sup>B</sup> in the [Available Models section](#-available-models) support batch processing. Those are models with less than 70B parameters (models that fit on a single Sophia node)
 
 
 ### Input File Format
