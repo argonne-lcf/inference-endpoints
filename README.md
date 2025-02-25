@@ -618,8 +618,8 @@ print(response.json())
 Sample output:
 ```bash
 {
-    "results_file": "/eagle/argonne_tpc/cucinell/Data/prompts_massgen/inference_results/student_teacher_1.5M_llama3.3_70b/chunk_aj_Llama-3.3-70B-Instruct_03533097-65c5-4ea8-9a00-2dbd1e152eb4/chunk_aj_20250220_010018.results.jsonl",
-    "progress_file": "/eagle/argonne_tpc/cucinell/Data/prompts_massgen/inference_results/student_teacher_1.5M_llama3.3_70b/chunk_aj_Llama-3.3-70B-Instruct_03533097-65c5-4ea8-9a00-2dbd1e152eb4/chunk_aj_20250220_010018.progress.json",
+    "results_file": "/eagle/argonne_tpc/<username>/<your-custom-path>/<input-file-name>_<model>_<batch-id>/<input-file-name>_<timestamp>.results.jsonl",
+    "progress_file": "/eagle/argonne_tpc/<username>/<your-custom-path>/<input-file-name>_<model>_<batch-id>/<input-file-name>_<timestamp>.progress.json",
     "metrics": {
         "response_time": 27837.440138816833,
         "throughput_tokens_per_second": 3899.833442250346,
@@ -752,6 +752,10 @@ Batch Status Codes:
   - > Error: Permission denied from internal policies. This is likely due to a high-assurance timeout...
   - Logout from your account by visiting [https://app.globus.org/logout](https://app.globus.org/logout)
   - Regenerate your access token with `python inference_auth_token.py authenticate --force`
+
+- **Permission Error During Batch Execution**
+  - > Error: Batch failed: Error: TaskExecutionFailed:... in makedirs... PermissionError:...
+  - ...
 
 ## 📞 Contact Us
 
