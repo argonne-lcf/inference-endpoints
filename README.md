@@ -503,14 +503,13 @@ The ALCF Inference Service provides batch processing capabilities for large-scal
   - Default directory: `/eagle/argonne_tpc/inference-service-batch-results/`.
   - Custom directory: Specified via optional `output_folder_path` in the request payload (e.g., `/eagle/argonne_tpc/my_username/my_batches/`). 
 
-> **📝 Important Note:** Input file and output folder (if provided) must be located within the `argonne_tcp` project space, or within a world readable/writable folder. Otherwise, the ALCF inference service will not have the permission to process your batch request.
+> **📝 Important Note:** Input file and output folder (if provided) **must be located within the `argonne_tcp` project** space or within a world readable/writable folder. Otherwise, the ALCF inference service will not have the permission to process your batch request.
 
 ### Concurrent Job Limit:
 Currently, the service accommodates only two concurrent batch jobs. Any additional jobs are queued on Globus, and the batch status will accurately reflect the current state of each job.
 
 
-> **📝 Important Note:**
-> * Only models marked with <sup>B</sup> in the [Available Models section](#-available-models) support batch processing. Those are models with less than 70B parameters (models that fit on a single Sophia node)
+> **📝 Important Note:** Only models marked with <sup>B</sup> in the [Available Models section](#-available-models) support batch processing. Those are models with less than 70B parameters (models that fit on a single Sophia node)
 
 
 ### Input File Format
@@ -522,7 +521,7 @@ Each line in the input file should contain a complete JSON request object in the
 ```
 
 > **📝 Important Notes:**
-> * **Input files must be available on the ALCF filesystem in the `argonne_tpc` project space or a world readable/writable folder**
+> * Input files **must be located within the `argonne_tcp` project** space or within a world readable/writable folder.
 > * Each request in the input file should be formatted as a JSON object on a single line (JSON Lines format).
 > * Each input file must only target one model, since a batch job will only load one model in memory.
 
