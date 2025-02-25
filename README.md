@@ -187,7 +187,7 @@ When interacting with the inference endpoints, it's crucial to understand the sy
 3. **Job and model running status**
    - To view currently running jobs along with the models served on the cluster you can run `curl -X GET "https://data-portal-dev.cels.anl.gov/resource_server/sophia/jobs" -H "Authorization: Bearer ${access_token}"`. See [Authentication](#authentication) for `access_token`
      
-> ** Note ** 
+> **📝 Note:** 
 > * If you’re interested in extended model runtimes, reservations, or private model deployments, please get in touch with us.
 
 ### Cluster-Specific Details
@@ -500,17 +500,18 @@ The ALCF Inference Service provides batch processing capabilities for large-scal
 - The service runs for a maximum of 24 hours or until all requests are processed
 - Once completed, the model is automatically brought down to free resources
 - Results are written either to:
-  - Default directory: `/eagle/argonne_tpc/inference-service-batch-results/`
-  - Custom path: Specified via optional `output_folder_path` in the request payload. The path must either point to a folder within the argonne_tpc project space (e.g., `/eagle/argonne_tpc/my_username/my_batches/`), or to a world readable/writable folder.
+  - Default directory: `/eagle/argonne_tpc/inference-service-batch-results/`.
+  - Custom directory: Specified via optional `output_folder_path` in the request payload (e.g., `/eagle/argonne_tpc/path/to/your/output/folder/`). 
+
+> **📝 Important Note:**
+> * Input file and output folder (if provided) **must be located within the `argonne_tcp` project** space or within a world readable/writable folder. Otherwise, the ALCF inference service will not have the permission to process your batch request.
 
 ### Concurrent Job Limit:
 Currently, the service accommodates only two concurrent batch jobs. Any additional jobs are queued on Globus, and the batch status will accurately reflect the current state of each job.
 
 
-> **📝 Important Notes:**
-> * Only models marked with <sup>B</sup> in the [Available Models section](#-available-models) support batch processing
-> * Currently only works for models with less than 70B parameters (models that fit on a single Sophia node)
-
+> **📝 Important Note:**
+> * Only models marked with <sup>B</sup> in the [Available Models section](#-available-models) support batch processing. Those are models with less than 70B parameters (models that fit on a single Sophia node)
 
 
 ### Input File Format
@@ -521,9 +522,10 @@ Each line in the input file should contain a complete JSON request object in the
 {"custom_id": "request-2", "method": "POST", "url": "/v1/chat/completions", "body": {"model": "meta-llama/Meta-Llama-3.1-8B-Instruct", "messages": [{"role": "system", "content": "You are an unhelpful assistant."},{"role": "user", "content": "Hello world!"}],"max_tokens": 1000}}
 ```
 
-> **📝 Notes:**
-> * Input files must be available on the ALCF filesystem in the argonne_tpc project space or a world readable/writable folder
-> * Each request in the input file should be formatted as a JSON object on a single line (JSON Lines format)
+> **📝 Important Notes:**
+> * Input files **must be located within the `argonne_tcp` project** space or within a world readable/writable folder.
+> * Each request in the input file should be formatted as a JSON object on a single line (JSON Lines format).
+> * Each input file must only target one model, since a batch job will only load one model in memory.
 
 ### Batch API Endpoints
 
@@ -547,7 +549,17 @@ curl -X POST "$base_url" \
      -H "Content-Type: application/json" \
      -d '{
           "model": "meta-llama/Meta-Llama-3.1-8B-Instruct",
-          "input_file": "/eagle/path/to/your/input.jsonl"
+          "input_file": "/eagle/argonne_tpc/path/to/your/input.jsonl"
+        }'
+
+# Submit batch request with custom output folder
+curl -X POST "$base_url" \
+     -H "Authorization: Bearer ${access_token}" \
+     -H "Content-Type: application/json" \
+     -d '{
+          "model": "meta-llama/Meta-Llama-3.1-8B-Instruct",
+          "input_file": "/eagle/argonne_tpc/path/to/your/input.jsonl",
+          "output_folder_path": "/eagle/argonne_tpc/path/to/your/output/folder/"
         }'
 ```
 
@@ -570,7 +582,8 @@ url = "https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/batch
 # Submit batch request
 data = {
     "model": "meta-llama/Meta-Llama-3.1-8B-Instruct",
-    "input_file": "/eagle/path/to/your/input.jsonl"
+    "input_file": "/eagle/argonne_tpc/path/to/your/input.jsonl",
+    "output_folder_path": "/eagle/argonne_tpc/path/to/your/output/folder/"
 }
 
 response = requests.post(url, headers=headers, json=data)
@@ -581,7 +594,7 @@ print(response.json())
 #### Retrieve Batch
 
 <details>
-<summary>Retrieve Batch Results</summary>
+<summary>Retrieve Batch Metrics</summary>
 
 ```bash
 #!/bin/bash
@@ -618,8 +631,8 @@ print(response.json())
 Sample output:
 ```bash
 {
-    "results_file": "/eagle/argonne_tpc/cucinell/Data/prompts_massgen/inference_results/student_teacher_1.5M_llama3.3_70b/chunk_aj_Llama-3.3-70B-Instruct_03533097-65c5-4ea8-9a00-2dbd1e152eb4/chunk_aj_20250220_010018.results.jsonl",
-    "progress_file": "/eagle/argonne_tpc/cucinell/Data/prompts_massgen/inference_results/student_teacher_1.5M_llama3.3_70b/chunk_aj_Llama-3.3-70B-Instruct_03533097-65c5-4ea8-9a00-2dbd1e152eb4/chunk_aj_20250220_010018.progress.json",
+    "results_file": "/eagle/argonne_tpc/path/to/your/output/folder/<input-file-name>_<model>_<batch-id>/<input-file-name>_<timestamp>.results.jsonl",
+    "progress_file": "/eagle/argonne_tpc/path/to/your/output/folder/<input-file-name>_<model>_<batch-id>/<input-file-name>_<timestamp>.progress.json",
     "metrics": {
         "response_time": 27837.440138816833,
         "throughput_tokens_per_second": 3899.833442250346,
@@ -646,7 +659,7 @@ access_token=$(python inference_auth_token.py get_access_token)
 curl -X GET "https://data-portal-dev.cels.anl.gov/resource_server/v1/batches" \
      -H "Authorization: Bearer ${access_token}"
 
-# Optionally filter by status
+# Optionally filter by status (pending, running, completed, or failed)
 curl -X GET "https://data-portal-dev.cels.anl.gov/resource_server/v1/batches?status=completed" \
      -H "Authorization: Bearer ${access_token}"
 ```
@@ -669,7 +682,7 @@ url = "https://data-portal-dev.cels.anl.gov/resource_server/v1/batches"
 response = requests.get(url, headers=headers)
 print(response.json())
 
-# Optionally filter by status
+# Optionally filter by status (pending, running, completed, or failed)
 params = {'status': 'completed'}
 response = requests.get(url, headers=headers, params=params)
 print(response.json())
@@ -678,19 +691,19 @@ Sample Output:
 ```bash
 [
   {
-    "batch_id": "f8fa8efd-37c1-476d-a0a7-677787eff743",
+    "batch_id": "f8fa8efd-1111-476d-a0a0-111111111111",
     "cluster": "sophia",
     "created_at": "2025-02-20 18:39:58.049584+00:00",
     "framework": "vllm",
-    "input_file": "/eagle/argonne_tpc/cucinell/Data/prompts_massgen/inference_results/student_teacher_1.5M_llama3.3_70b/chunk_ak.jsonl",
+    "input_file": "/eagle/argonne_tpc/path/to/your/output/folder/chunk_a.jsonl",
     "status": "pending"
   },
   {
-    "batch_id": "4b8a31b8-b0b3-479f-8caf-5b788d46e369",
+    "batch_id": "4b8a31b8-2222-479f-8c8c-222222222222",
     "cluster": "sophia",
     "created_at": "2025-02-20 18:40:30.882414+00:00",
     "framework": "vllm",
-    "input_file": "/eagle/argonne_tpc/cucinell/Data/prompts_massgen/inference_results/student_teacher_1.5M_llama3.3_70b/chunk_al.jsonl",
+    "input_file": "/eagle/argonne_tpc/path/to/your/output/folder/chunk_b.jsonl",
     "status": "pending"
   }
 ]
@@ -752,6 +765,10 @@ Batch Status Codes:
   - > Error: Permission denied from internal policies. This is likely due to a high-assurance timeout...
   - Logout from your account by visiting [https://app.globus.org/logout](https://app.globus.org/logout)
   - Regenerate your access token with `python inference_auth_token.py authenticate --force`
+
+- **Permission Error During Batch Execution**
+  - > Error: Batch failed: Error: TaskExecutionFailed:... PermissionError:...
+  - Make sure your input file and output folder (if provided) are located within the `argonne_tcp` project space, or within a world readable/writable folder.
 
 ## 📞 Contact Us
 
