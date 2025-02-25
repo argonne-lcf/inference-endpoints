@@ -695,7 +695,7 @@ Sample Output:
     "cluster": "sophia",
     "created_at": "2025-02-20 18:39:58.049584+00:00",
     "framework": "vllm",
-    "input_file": "/eagle/argonne_tpc/path/to/your/chunk_a.jsonl",
+    "input_file": "/eagle/argonne_tpc/path/to/your/output/folder/chunk_a.jsonl",
     "status": "pending"
   },
   {
@@ -703,7 +703,7 @@ Sample Output:
     "cluster": "sophia",
     "created_at": "2025-02-20 18:40:30.882414+00:00",
     "framework": "vllm",
-    "input_file": "/eagle/argonne_tpc/path/to/your/chunk_b.jsonl",
+    "input_file": "/eagle/argonne_tpc/path/to/your/output/folder/chunk_b.jsonl",
     "status": "pending"
   }
 ]
