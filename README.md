@@ -108,10 +108,10 @@ https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/batches
 
 ### 
 > **📝 Important Notes:** 
-> Currently embeddings are only supported by the infinity framework.
-> See [usage](#-usage-examples) and/or refer to [OpenAI API](https://platform.openai.com/docs/overview) docs for examples
-> Response format is text/plain by default for all endpoints
-> Globus backend does not support streaming, set `stream: False` when integrating with RAG applications
+> * Currently embeddings are only supported by the infinity framework.
+> * See [usage](#-usage-examples) and/or refer to [OpenAI API](https://platform.openai.com/docs/overview) docs for examples.
+> * Default response format for the API is `text/plain`.
+> * Globus backend does not support streaming, set `stream: False` when integrating with RAG applications.
 
 ## 📚 Available Models
 
