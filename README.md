@@ -768,10 +768,20 @@ The inference team is currently developing a mechanism for users to cancel submi
 
 ## 🚨 Troubleshooting
 
-- **Connection Timeout?** 
+- **Connection Timeout** 
   - Verify Argonne network access
   - The model you are requesting may be queued as the cluster has too many pending jobs
     - Check model status by querying `https://data-portal-dev.cels.anl.gov/resource_server/sophia/jobs`
+
+- **Connection Error from Polaris**
+  - > Could not connect ... Max retries exceeded with url ...
+  - Reset your HTTP and HTTPS proxies:
+    ```bash
+    export HTTP_PROXY="http://proxy.alcf.anl.gov:3128"
+    export HTTPS_PROXY="http://proxy.alcf.anl.gov:3128"
+    export http_proxy="http://proxy.alcf.anl.gov:3128"
+    export https_proxy="http://proxy.alcf.anl.gov:3128"
+    ```
 
 - **Permission Denied from Internal Policies**
   - > Error: Permission denied from internal policies. This is likely due to a high-assurance timeout...
