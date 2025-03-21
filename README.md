@@ -189,6 +189,9 @@ When interacting with the inference endpoints, it's crucial to understand the sy
 
 3. **Job and model running status**
    - To view currently running jobs along with the models served on the cluster you can run `curl -X GET "https://data-portal-dev.cels.anl.gov/resource_server/sophia/jobs" -H "Authorization: Bearer ${access_token}"`. See [Authentication](#authentication) for `access_token`
+  
+4. **Payload limits**
+   - Payloads sent via Globus for inference requests are limited to 10 MB. For requests exceeding this limit, either split your input into smaller chunks or utilize the <a href="#-batch">Batch mode</a> for processing larger inputs efficiently.
      
 > **📝 Note:** 
 > * If you’re interested in extended model runtimes, reservations, or private model deployments, please get in touch with us.
