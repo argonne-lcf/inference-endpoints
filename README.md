@@ -157,7 +157,7 @@ https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/batches
 ### 👁️ Vision Language Models
 
 #### Qwen Family
-- Qwen/Qwen2-VL-72B-Instruct<sup>B</sup> (Ranked 1 in [vision leaderboard](https://huggingface.co/spaces/opencompass/open_vlm_leaderboard))
+- Qwen/Qwen2-VL-72B-Instruct<sup>B</sup>
 
 #### Meta Llama Family
 - meta-llama/Llama-3.2-90B-Vision-Instruct
@@ -165,7 +165,7 @@ https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/batches
 ### 🧲 Embedding Models
 
 #### Nvidia Family
-- nvidia/NV-Embed-v2 (Ranked 1 in [embedding Leaderboard](https://huggingface.co/spaces/mteb/leaderboard))
+- nvidia/NV-Embed-v2
 
 ### 
 > **📝 Want to add a model?** 
