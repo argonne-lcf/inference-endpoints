@@ -121,14 +121,15 @@ https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/batches
 - Qwen/Qwen2.5-14B-Instruct<sup>B</sup>
 - Qwen/Qwen2.5-7B-Instruct<sup>B</sup>
 - Qwen/QwQ-32B-Preview<sup>B</sup>
+- Qwen/QwQ-32B<sup>B</sup><sup>R</sup>
 
 #### Meta Llama Family
 - meta-llama/Meta-Llama-3-70B-Instruct<sup>B</sup>
 - meta-llama/Meta-Llama-3-8B-Instruct<sup>B</sup>
 - meta-llama/Meta-Llama-3.1-70B-Instruct<sup>B</sup>
 - meta-llama/Meta-Llama-3.1-8B-Instruct<sup>B</sup>
-- meta-llama/Meta-Llama-3.1-405B-Instruct
-- meta-llama/Llama-3.3-70B-Instruct<sup>B</sup>
+- meta-llama/Meta-Llama-3.1-405B-Instruct<sup>T</sup>
+- meta-llama/Llama-3.3-70B-Instruct<sup>B</sup><sup>T</sup>
 
 #### Mistral Family
 - mistralai/Mistral-7B-Instruct-v0.3<sup>B</sup>
@@ -169,6 +170,9 @@ https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/batches
 ### 
 > **📝 Want to add a model?** 
 > Add the HF-compatible, framework-supported model weights to `/eagle/argonne_tpc/model_weights/` and contact [Aditya Tanikanti](mailto:atanikanti@anl.gov?subject=Add%20new%20endpoint)
+> **B** - Batch Enabled
+> **T** - Tool Calling Enabled
+> **R** - Reasoning Enabled
 
 ## 🧩 Inference Execution
 
