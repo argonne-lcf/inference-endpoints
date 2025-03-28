@@ -169,10 +169,10 @@ https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/batches
 
 ### 
 > **📝 Want to add a model?** 
-> Add the HF-compatible, framework-supported model weights to `/eagle/argonne_tpc/model_weights/` and contact [Aditya Tanikanti](mailto:atanikanti@anl.gov?subject=Add%20new%20endpoint)
-> **B** - Batch Enabled
-> **T** - Tool Calling Enabled
-> **R** - Reasoning Enabled
+> * Add the HF-compatible, framework-supported model weights to `/eagle/argonne_tpc/model_weights/` and contact [Aditya Tanikanti](mailto:atanikanti@anl.gov?subject=Add%20new%20endpoint)
+> * **B** - Batch Enabled
+> * **T** - Tool Calling Enabled
+> * **R** - Reasoning Enabled
 
 ## 🧩 Inference Execution
 
