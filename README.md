@@ -121,7 +121,7 @@ https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/batches
 - Qwen/Qwen2.5-14B-Instruct<sup>B</sup>
 - Qwen/Qwen2.5-7B-Instruct<sup>B</sup>
 - Qwen/QwQ-32B-Preview<sup>B</sup>
-- Qwen/QwQ-32B<sup>B</sup><sup>R</sup>
+- Qwen/QwQ-32B<sup>B</sup><sup>R</sup><sup>T</sup>
 
 #### Meta Llama Family
 - meta-llama/Meta-Llama-3-70B-Instruct<sup>B</sup>
