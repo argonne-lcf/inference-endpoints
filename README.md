@@ -140,12 +140,10 @@ https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/batches
 - mgoin/Nemotron-4-340B-Instruct-hf
 
 #### Aurora GPT Family
-- argonne-private/AuroraGPT-7B (previously called auroragpt/auroragpt-0.1-chkpt-7B-Base)
-- argonne-private/AuroraGPT-IT-v4-0125 (previously called auroragpt/auroragpt-0.1-chkpt-7B-IT)
+- argonne-private/AuroraGPT-IT-v4-0125
 - argonne-private/AuroraGPT-Tulu3-SFT-0125
-- argonne-private/AuroraGPT-KTO-1902 (previously called auroragpt/auroragpt-0.1-chkpt-7B-KTO)
-- argonne-private/AuroraGPT-DPO-1902 (previously called auroragpt/auroragpt-0.1-chkpt-7B-DPO)
-- argonne-private/AuroraGPT-SFT-190
+- argonne-private/AuroraGPT-DPO-UFB-0225
+- argonne-private/AuroraGPT-7B-OI
 
 ### Deepseek Family
 - deepseek-ai/DeepSeek-R1 (Not supported natively on A100 GPUs. Under Testing)
