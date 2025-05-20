@@ -98,7 +98,7 @@ https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/completions
 
 ### Embeddings
 ```
-https://data-portal-dev.cels.anl.gov/resource_server/sophia/infinity/v1/embeddings
+https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/embeddings
 ```
 
 ### Batches
