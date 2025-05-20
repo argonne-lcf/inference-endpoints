@@ -122,6 +122,8 @@ https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/batches
 - Qwen/Qwen2.5-7B-Instruct<sup>B</sup><sup>T</sup>
 - Qwen/QwQ-32B-Preview<sup>B</sup>
 - Qwen/QwQ-32B<sup>B</sup><sup>R</sup><sup>T</sup>
+- Qwen/Qwen3-235B-A22B<sup>R</sup><sup>T</sup>
+- Qwen/Qwen3-32B<sup>B</sup><sup>R</sup><sup>T</sup>
 
 #### Meta Llama Family
 - meta-llama/Meta-Llama-3-70B-Instruct<sup>B</sup>
@@ -130,6 +132,8 @@ https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/batches
 - meta-llama/Meta-Llama-3.1-8B-Instruct<sup>B</sup>
 - meta-llama/Meta-Llama-3.1-405B-Instruct<sup>T</sup>
 - meta-llama/Llama-3.3-70B-Instruct<sup>B</sup><sup>T</sup>
+- meta-llama/Llama-4-Scout-17B-16E-Instruct<sup>T</sup>
+- meta-llama/Llama-4-Maverick-17B-128E-Instruct<sup>T</sup>
 
 #### Mistral Family
 - mistralai/Mistral-7B-Instruct-v0.3<sup>B</sup>
@@ -152,6 +156,9 @@ https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/batches
 ### Allenai Family
 - allenai/Llama-3.1-Tulu-3-405B
 
+### Google Family
+- google/gemma-3-27b-it<sup>B</sup><sup>T</sup>
+
 ### 👁️ Vision Language Models
 
 #### Qwen Family
@@ -162,8 +169,14 @@ https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/batches
 
 ### 🧲 Embedding Models
 
+#### Mistral Family
+- mistralai/Mistral-7B-Instruct-v0.3-embed
+- Salesforce/SFR-Embedding-Mistral
+
 #### Nvidia Family
 - nvidia/NV-Embed-v2
+
+
 
 ### 
 > **📝 Want to add a model?** 
