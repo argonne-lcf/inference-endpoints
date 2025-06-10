@@ -149,10 +149,6 @@ https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/batches
 - argonne-private/AuroraGPT-DPO-UFB-0225
 - argonne-private/AuroraGPT-7B-OI
 
-### Deepseek Family
-- deepseek-ai/DeepSeek-R1 (Not supported natively on A100 GPUs. Under Testing)
-- deepseek-ai/DeepSeek-V3 (Not supported natively on A100 GPUs. Under Testing)
-
 ### Allenai Family
 - allenai/Llama-3.1-Tulu-3-405B
 
