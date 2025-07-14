@@ -120,7 +120,6 @@ https://data-portal-dev.cels.anl.gov/resource_server/sophia/vllm/v1/batches
 #### Qwen Family
 - Qwen/Qwen2.5-14B-Instruct<sup>B</sup><sup>T</sup>
 - Qwen/Qwen2.5-7B-Instruct<sup>B</sup><sup>T</sup>
-- Qwen/QwQ-32B-Preview<sup>B</sup>
 - Qwen/QwQ-32B<sup>B</sup><sup>R</sup><sup>T</sup>
 - Qwen/Qwen3-235B-A22B<sup>R</sup><sup>T</sup>
 - Qwen/Qwen3-32B<sup>B</sup><sup>R</sup><sup>T</sup>
