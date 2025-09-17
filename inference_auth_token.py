@@ -1,6 +1,7 @@
 import globus_sdk
 from globus_sdk.login_flows import LocalServerLoginFlowManager # Needed to access globus_sdk.gare
 import os.path
+import time
 
 # Globus UserApp name
 APP_NAME = "inference_app"
@@ -78,6 +79,35 @@ def get_access_token():
     return auth.access_token
 
 
+# Get time until token expiration
+def get_time_until_token_expiration(units="seconds"):
+    """
+    Returns the time until the access token expires, in units of
+    seconds, minutes, or hours. Negative times reveal that the token
+    is expired already.
+    """
+
+    # Get authorizer object
+    auth = get_auth_object()
+
+    # Gather the time difference between now and the expiration time (both Unix timestamps)
+    now = time.time()
+    delta_t = auth.expires_at - now
+
+    # Convert units
+    if units == "seconds":
+        delta_t = delta_t
+    elif units == "minutes":
+        delta_t = delta_t / 60
+    elif units == "hours":
+        delta_t = delta_t / 3600
+    else:
+        return "Error: units must be 'seconds', 'minutes', or 'hours'."
+    
+    # Return the time difference in the requested Units
+    return round(delta_t, 2)
+
+
 # If this file is executed as a script ...
 if __name__ == "__main__":
 
@@ -91,10 +121,12 @@ if __name__ == "__main__":
     # Constant
     AUTHENTICATE_ACTION = "authenticate"
     GET_ACCESS_TOKEN_ACTION = "get_access_token"
+    GET_TOKEN_EXPIRATION_ACTION = "get_time_until_token_expiration"
 
     # Define possible arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument('action', choices=[AUTHENTICATE_ACTION, GET_ACCESS_TOKEN_ACTION])
+    parser.add_argument('action', choices=[AUTHENTICATE_ACTION, GET_ACCESS_TOKEN_ACTION, GET_TOKEN_EXPIRATION_ACTION])
+    parser.add_argument("--units", choices=['seconds', 'minutes', 'hours'], default='seconds', help="Units for the time until token expiration")
     parser.add_argument("-f", "--force", action="store_true", help="authenticate from scratch")
     args = parser.parse_args()
 
@@ -119,3 +151,7 @@ if __name__ == "__main__":
 
         # Load tokens, refresh token if necessary, and print access token
         print(get_access_token())
+
+    # Get token expiration
+    elif args.action == GET_TOKEN_EXPIRATION_ACTION:
+        print(get_time_until_token_expiration(args.units))
