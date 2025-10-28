@@ -16,16 +16,8 @@ GATEWAY_SCOPE = f"https://auth.globus.org/scopes/{GATEWAY_CLIENT_ID}/action_all"
 # Path where access and refresh tokens are stored
 TOKENS_PATH = f"{os.path.expanduser('~')}/.globus/app/{AUTH_CLIENT_ID}/{APP_NAME}/tokens.json"
 
-# Allowed identity provider domains
-ALLOWED_DOMAINS = [
-    "anl.gov",
-    "alcf.anl.gov",
-    "uchicago.edu",
-    "llnl.gov"
-]
-
 # Globus authorizer parameters to point to specific identity providers
-GA_PARAMS = globus_sdk.gare.GlobusAuthorizationParameters(session_required_single_domain=ALLOWED_DOMAINS)
+GA_PARAMS = globus_sdk.gare.GlobusAuthorizationParameters()
 
 
 # Error handler to guide user through specific identity providers 
