@@ -151,4 +151,11 @@ if __name__ == "__main__":
 
     # Get token expiration
     elif args.action == GET_TOKEN_EXPIRATION_ACTION:
+
+        # Make sure tokens exist
+        # This is important otherwise the CLI will print more than just the access token
+        if not os.path.isfile(TOKENS_PATH):
+            raise InferenceAuthError('Access token does not exist. '
+                'Please authenticate by running "python3 inference_auth_token.py authenticate".')
+        
         print(get_time_until_token_expiration(args.units))
