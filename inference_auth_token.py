@@ -67,7 +67,7 @@ def get_access_token():
     """
 
     # Get authorizer object and authenticate if need be
-    auth = get_auth_object()
+    auth = get_auth_object(force=False)
 
     # Make sure the stored access token if valid, and refresh otherwise
     auth.ensure_valid_token()
@@ -85,7 +85,7 @@ def get_time_until_token_expiration(units="seconds"):
     """
 
     # Get authorizer object
-    auth = get_auth_object()
+    auth = get_auth_object(force=False)
 
     # Gather the time difference between now and the expiration time (both Unix timestamps)
     now = time.time()
@@ -131,7 +131,7 @@ if __name__ == "__main__":
     if args.action == AUTHENTICATE_ACTION:
         
         # Authenticate using Globus account
-        _ = get_auth_object(force=args.force)
+        _ = get_auth_object(force=True)
 
     # Get token
     elif args.action == GET_ACCESS_TOKEN_ACTION:
@@ -151,4 +151,11 @@ if __name__ == "__main__":
 
     # Get token expiration
     elif args.action == GET_TOKEN_EXPIRATION_ACTION:
+
+        # Make sure tokens exist
+        # This is important otherwise the CLI will print more than just the access token
+        if not os.path.isfile(TOKENS_PATH):
+            raise InferenceAuthError('Access token does not exist. '
+                'Please authenticate by running "python3 inference_auth_token.py authenticate".')
+        
         print(get_time_until_token_expiration(args.units))
