@@ -17,7 +17,7 @@ GATEWAY_SCOPE = f"https://auth.globus.org/scopes/{GATEWAY_CLIENT_ID}/action_all"
 TOKENS_PATH = f"{os.path.expanduser('~')}/.globus/app/{AUTH_CLIENT_ID}/{APP_NAME}/tokens.json"
 
 # Globus authorizer parameters to point to specific identity providers
-GA_PARAMS = globus_sdk.gare.GlobusAuthorizationParameters()
+GA_PARAMS = globus_sdk.gare.GlobusAuthorizationParameters(session_required_policies=["83732ff2-9c42-4548-b5ce-17e498c84f6a"])
 
 
 # Error handler to guide user through specific identity providers 
