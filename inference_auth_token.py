@@ -1,5 +1,6 @@
 import globus_sdk
 from globus_sdk.login_flows import LocalServerLoginFlowManager # Needed to access globus_sdk.gare
+from globus_sdk.token_storage import JSONTokenStorage
 import os.path
 import time
 
@@ -35,7 +36,7 @@ def get_auth_object(force=False, do_refresh=False, tokens_path=TOKENS_PATH):
     has already happened, existing tokens will be reused.
     """
 
-    tokens_json = globus_sdk.token_storage.JSONTokenStorage(tokens_path)
+    tokens_json = JSONTokenStorage(tokens_path)
 
     # Create Globus user application
     app = globus_sdk.UserApp(
