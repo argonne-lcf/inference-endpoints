@@ -28,12 +28,14 @@ class DomainBasedErrorHandler:
 
 
 # Get refresh authorizer object
-def get_auth_object(force=False, do_refresh=False):
+def get_auth_object(force=False, do_refresh=False, tokens_path=TOKENS_PATH):
     """
     Create a Globus UserApp with the inference service scope
     and trigger the authentication process. If authentication
     has already happened, existing tokens will be reused.
     """
+
+    tokens_json = globus_sdk.token_storage.JSONTokenStorage(tokens_path)
 
     # Create Globus user application
     app = globus_sdk.UserApp(
@@ -42,7 +44,8 @@ def get_auth_object(force=False, do_refresh=False):
         scope_requirements={GATEWAY_CLIENT_ID: [GATEWAY_SCOPE]},
         config=globus_sdk.GlobusAppConfig(
             request_refresh_tokens=True,
-            token_validation_error_handler=DomainBasedErrorHandler()
+            token_validation_error_handler=DomainBasedErrorHandler(),
+            token_storage=tokens_json
         ),
     )
 
@@ -53,7 +56,6 @@ def get_auth_object(force=False, do_refresh=False):
     # Authenticate using your Globus account or reuse existing tokens
     auth = app.get_authorizer(GATEWAY_CLIENT_ID)
     if do_refresh is True:
-        tokens_json = globus_sdk.token_storage.JSONTokenStorage(TOKENS_PATH)
         glob_auth_cli = globus_sdk.NativeAppAuthClient(AUTH_CLIENT_ID)
         authorizer = globus_sdk.RefreshTokenAuthorizer(
                        auth.refresh_token,
@@ -65,9 +67,9 @@ def get_auth_object(force=False, do_refresh=False):
     return auth
 
 
-def get_refresh_token():
+def get_refresh_token(tokens_path=TOKENS_PATH):
     # Get authorizer object and authenticate if need be
-    auth = get_auth_object(force=False, do_refresh=True)
+    auth = get_auth_object(force=False, do_refresh=True, tokens_path=tokens_path)
 
     # Make sure the stored access token if valid, and refresh otherwise
     auth.ensure_valid_token()
@@ -77,7 +79,7 @@ def get_refresh_token():
 
 
 # Get access token
-def get_access_token():
+def get_access_token(tokens_path=TOKENS_PATH):
     """
     Load existing tokens, refresh the access token if necessary,
     and return the valid access token. If there is no token stored
@@ -86,7 +88,7 @@ def get_access_token():
     """
 
     # Get authorizer object and authenticate if need be
-    auth = get_auth_object(force=False)
+    auth = get_auth_object(force=False, tokens_path=tokens_path)
 
     # Make sure the stored access token if valid, and refresh otherwise
     auth.ensure_valid_token()
@@ -96,7 +98,7 @@ def get_access_token():
 
 
 # Get time until token expiration
-def get_time_until_token_expiration(units="seconds"):
+def get_time_until_token_expiration(units="seconds", tokens_path=TOKENS_PATH):
     """
     Returns the time until the access token expires, in units of
     seconds, minutes, or hours. Negative times reveal that the token
@@ -104,7 +106,7 @@ def get_time_until_token_expiration(units="seconds"):
     """
 
     # Get authorizer object
-    auth = get_auth_object(force=False)
+    auth = get_auth_object(force=False, tokens_path=tokens_path)
 
     # Gather the time difference between now and the expiration time (both Unix timestamps)
     now = time.time()
