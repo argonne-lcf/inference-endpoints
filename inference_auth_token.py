@@ -164,5 +164,7 @@ if __name__ == "__main__":
 
         # Make sure tokens exist
         # This is important otherwise the CLI will print more than just the access token
+        if not os.path.isfile(args.tokensjson):
+            raise InferenceAuthError(f'Access token path "{args.tokensjson}" does not exist. Please authenticate by running "python3 inference_auth_token.py -t {args.tokensjson} authenticate".')
         
         print(get_time_until_token_expiration(args.units, tokens_path=args.tokensjson))
