@@ -1,7 +1,14 @@
 import globus_sdk
 from globus_sdk.login_flows import LocalServerLoginFlowManager # Needed to access globus_sdk.gare
+from packaging.version import parse as version_parse
 import os.path
 import time
+
+GLOBUS_SDK_VERSION = version_parse(globus_sdk.__version__)
+if GLOBUS_SDK_VERSION.major > 3:
+    from globus_sdk.token_storage import JSONTokenStorage
+else:
+    from globus_sdk.tokenstorage import JSONTokenStorage
 
 # Globus UserApp name
 APP_NAME = "inference_app"
@@ -28,12 +35,14 @@ class DomainBasedErrorHandler:
 
 
 # Get refresh authorizer object
-def get_auth_object(force=False):
+def get_auth_object(force=False, tokens_path=TOKENS_PATH):
     """
     Create a Globus UserApp with the inference service scope
     and trigger the authentication process. If authentication
     has already happened, existing tokens will be reused.
     """
+
+    tokens_json = JSONTokenStorage(tokens_path)
 
     # Create Globus user application
     app = globus_sdk.UserApp(
@@ -42,7 +51,8 @@ def get_auth_object(force=False):
         scope_requirements={GATEWAY_CLIENT_ID: [GATEWAY_SCOPE]},
         config=globus_sdk.GlobusAppConfig(
             request_refresh_tokens=True,
-            token_validation_error_handler=DomainBasedErrorHandler()
+            token_validation_error_handler=DomainBasedErrorHandler(),
+            token_storage=tokens_json
         ),
     )
 
@@ -58,7 +68,7 @@ def get_auth_object(force=False):
 
 
 # Get access token
-def get_access_token():
+def get_access_token(tokens_path=TOKENS_PATH):
     """
     Load existing tokens, refresh the access token if necessary,
     and return the valid access token. If there is no token stored
@@ -67,7 +77,7 @@ def get_access_token():
     """
 
     # Get authorizer object and authenticate if need be
-    auth = get_auth_object(force=False)
+    auth = get_auth_object(force=False, tokens_path=tokens_path)
 
     # Make sure the stored access token if valid, and refresh otherwise
     auth.ensure_valid_token()
@@ -77,7 +87,7 @@ def get_access_token():
 
 
 # Get time until token expiration
-def get_time_until_token_expiration(units="seconds"):
+def get_time_until_token_expiration(units="seconds", tokens_path=TOKENS_PATH):
     """
     Returns the time until the access token expires, in units of
     seconds, minutes, or hours. Negative times reveal that the token
@@ -85,7 +95,7 @@ def get_time_until_token_expiration(units="seconds"):
     """
 
     # Get authorizer object
-    auth = get_auth_object(force=False)
+    auth = get_auth_object(force=False, tokens_path=tokens_path)
 
     # Gather the time difference between now and the expiration time (both Unix timestamps)
     now = time.time()
@@ -124,6 +134,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('action', choices=[AUTHENTICATE_ACTION, GET_ACCESS_TOKEN_ACTION, GET_TOKEN_EXPIRATION_ACTION])
     parser.add_argument("--units", choices=['seconds', 'minutes', 'hours'], default='seconds', help="Units for the time until token expiration")
+    parser.add_argument("-t", "--tokensjson", default=TOKENS_PATH, help="path to tokens.json file")
     parser.add_argument("-f", "--force", action="store_true", help="authenticate from scratch")
     args = parser.parse_args()
 
@@ -131,31 +142,27 @@ if __name__ == "__main__":
     if args.action == AUTHENTICATE_ACTION:
         
         # Authenticate using Globus account
-        _ = get_auth_object(force=True)
+        _ = get_auth_object(force=True, tokens_path=args.tokensjson)
 
     # Get token
     elif args.action == GET_ACCESS_TOKEN_ACTION:
 
         # Make sure tokens exist
         # This is important otherwise the CLI will print more than just the access token
-        if not os.path.isfile(TOKENS_PATH):
-            raise InferenceAuthError('Access token does not exist. '
-                'Please authenticate by running "python3 inference_auth_token.py authenticate".')
+        if not os.path.isfile(args.tokensjson):
+            raise InferenceAuthError(f'Access token path "{args.tokensjson}" does not exist. Please authenticate by running "python3 inference_auth_token.py -t {args.tokensjson} authenticate".')
         
         # Make sure no force flag was provided
         if args.force:
             raise InferenceAuthError(f"The --force flag cannot be used with the {GET_ACCESS_TOKEN_ACTION} action.")
 
         # Load tokens, refresh token if necessary, and print access token
-        print(get_access_token())
+        print(get_access_token(tokens_path=args.tokensjson))
 
     # Get token expiration
     elif args.action == GET_TOKEN_EXPIRATION_ACTION:
 
         # Make sure tokens exist
         # This is important otherwise the CLI will print more than just the access token
-        if not os.path.isfile(TOKENS_PATH):
-            raise InferenceAuthError('Access token does not exist. '
-                'Please authenticate by running "python3 inference_auth_token.py authenticate".')
         
-        print(get_time_until_token_expiration(args.units))
+        print(get_time_until_token_expiration(args.units, tokens_path=args.tokensjson))
