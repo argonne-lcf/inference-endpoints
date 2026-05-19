@@ -1,3 +1,4 @@
 access_token.txt
 __pycache__/
 .ipynb_checkpoints/
+.env
