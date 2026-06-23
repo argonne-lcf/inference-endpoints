@@ -126,7 +126,7 @@ def revoke_access_token():
     app.logout()
 
     # Success message
-    print("Done.")
+    print("Done. The Inference Gateway API can take up to ~10 minutes to incorporate the revocation.")
 
 
 # If this file is executed as a script ...
