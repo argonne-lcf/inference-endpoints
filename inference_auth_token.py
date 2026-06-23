@@ -105,6 +105,30 @@ def get_time_until_token_expiration(units="seconds"):
     return round(delta_t, 2)
 
 
+# Revoke access token
+def revoke_access_token():
+    """
+    Logout user and revoke tokens.
+    """
+
+    # Create Globus user application
+    app = globus_sdk.UserApp(
+        APP_NAME,
+        client_id=AUTH_CLIENT_ID,
+        scope_requirements={GATEWAY_CLIENT_ID: [GATEWAY_SCOPE]},
+        config=globus_sdk.GlobusAppConfig(
+            request_refresh_tokens=True,
+            token_validation_error_handler=DomainBasedErrorHandler()
+        ),
+    )
+
+    # Logout and revoke tokens
+    app.logout()
+
+    # Success message
+    print("Done. The Inference Gateway API can take up to ~10 minutes to incorporate the revocation.")
+
+
 # If this file is executed as a script ...
 if __name__ == "__main__":
 
@@ -118,11 +142,12 @@ if __name__ == "__main__":
     # Constant
     AUTHENTICATE_ACTION = "authenticate"
     GET_ACCESS_TOKEN_ACTION = "get_access_token"
+    REVOKE_ACCESS_TOKEN_ACTION = "revoke_access_token"
     GET_TOKEN_EXPIRATION_ACTION = "get_time_until_token_expiration"
 
     # Define possible arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument('action', choices=[AUTHENTICATE_ACTION, GET_ACCESS_TOKEN_ACTION, GET_TOKEN_EXPIRATION_ACTION])
+    parser.add_argument('action', choices=[AUTHENTICATE_ACTION, GET_ACCESS_TOKEN_ACTION, REVOKE_ACCESS_TOKEN_ACTION, GET_TOKEN_EXPIRATION_ACTION])
     parser.add_argument("--units", choices=['seconds', 'minutes', 'hours'], default='seconds', help="Units for the time until token expiration")
     parser.add_argument("-f", "--force", action="store_true", help="authenticate from scratch")
     args = parser.parse_args()
@@ -153,9 +178,17 @@ if __name__ == "__main__":
     elif args.action == GET_TOKEN_EXPIRATION_ACTION:
 
         # Make sure tokens exist
-        # This is important otherwise the CLI will print more than just the access token
         if not os.path.isfile(TOKENS_PATH):
             raise InferenceAuthError('Access token does not exist. '
                 'Please authenticate by running "python3 inference_auth_token.py authenticate".')
         
         print(get_time_until_token_expiration(args.units))
+
+    # Revoke access token
+    elif args.action == REVOKE_ACCESS_TOKEN_ACTION:
+
+        # Make sure tokens exist
+        if not os.path.isfile(TOKENS_PATH):
+            raise InferenceAuthError('Access token not found.')
+        
+        revoke_access_token()
